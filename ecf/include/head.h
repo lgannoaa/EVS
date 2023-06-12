@@ -22,13 +22,13 @@ if [ -d /apps/ops/prod ]; then # On WCOSS2
   set -x
 fi
 
+# Setting the model package location
 modelhome=%PACKAGEHOME:%
 eval "export HOME${model:?'model undefined'}=$modelhome"
 eval "versionfile=\$HOME${model}/versions/run.ver"
-if [ -f "$versionfile" ]; then . $versionfile ; fi
-modelver=$(echo ${modelhome} | perl -pe "s:.*?/${model}\.(v[\d\.a-z]+).*:\1:")
-eval "export ${model}_ver=$modelver"
-
+if [ -f "$versionfile" ]; then
+  . $versionfile
+fi
 export envir=%ENVIR%
 export MACHINE_SITE=%MACHINE_SITE%
 export RUN_ENVIR=${RUN_ENVIR:-nco}
@@ -39,7 +39,7 @@ if [ -n "%PARATEST:%" ]; then export PARATEST=${PARATEST:-%PARATEST:%}; fi
 if [ -n "%COMPATH:%" ]; then export COMPATH=${COMPATH:-%COMPATH:%}; fi
 if [ -n "%MAILTO:%" ]; then export MAILTO=${MAILTO:-%MAILTO:%}; fi
 if [ -n "%DBNLOG:%" ]; then export DBNLOG=${DBNLOG:-%DBNLOG:%}; fi
-export KEEPDATA=${KEEPDATA:-%KEEPDATA:NO%}
+export KEEPDATA=YES
 export SENDDBN=${SENDDBN:-%SENDDBN:YES%}
 export SENDDBN_NTC=${SENDDBN_NTC:-%SENDDBN_NTC:YES%}
 
