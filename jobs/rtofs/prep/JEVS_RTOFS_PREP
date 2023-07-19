@@ -29,10 +29,14 @@ $HOMEevs/scripts/$COMPONENT/$STEP/exevs_${COMPONENT}_${STEP}.sh
 #  RUN is the validation source: ghrsst, smos, smap etc.
 for rcase in ghrsst smos smap aviso osisaf ndbc argo; do
   export RUN=$rcase
-  $HOMEevs/scripts/$COMPONENT/$STEP/exevs_${COMPONENT}_fcst_${STEP}.sh
+  $HOMEevs/scripts/$COMPONENT/$STEP/exevs_${COMPONENT}_fcst_${STEP}_parallel.sh
+  status=$?
+  [[ $status -ne 0 ]] && exit $status
 done
 
 #  process obs data
-$HOMEevs/scripts/$COMPONENT/$STEP/exevs_${COMPONENT}_obs_${STEP}.sh
-
+$HOMEevs/scripts/$COMPONENT/$STEP/exevs_${COMPONENT}_obs_${STEP}_parallel.sh
+status=$?
+[[ $status -ne 0 ]] && exit $status
+exit 0
 ################################# END OF JOB ##################################

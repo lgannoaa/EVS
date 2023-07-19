@@ -34,7 +34,6 @@ export MACHINE_SITE=%MACHINE_SITE%
 export RUN_ENVIR=${RUN_ENVIR:-nco}
 export SENDECF=${SENDECF:-YES}
 export SENDCOM=${SENDCOM:-YES}
-if [ -n "%PDY:%" ]; then export PDY=${PDY:-%PDY:%}; fi
 if [ -n "%PARATEST:%" ]; then export PARATEST=${PARATEST:-%PARATEST:%}; fi
 if [ -n "%COMPATH:%" ]; then export COMPATH=${COMPATH:-%COMPATH:%}; fi
 if [ -n "%MAILTO:%" ]; then export MAILTO=${MAILTO:-%MAILTO:%}; fi
@@ -61,6 +60,12 @@ if [ -d /apps/ops/prod ]; then # On WCOSS2
   set -x
 fi
 
+export PDY=$($NDATE | cut -c 1-8)
+if [ -n "%PDY:%" ]; then 
+  export PDY=%PDY:%
+else
+  export PDY=$($NDATE | cut -c 1-8)
+fi
 timeout 300 ecflow_client --init=${ECF_RID}
 
 if [[ " ops.prod ops.para " =~ " $(whoami) " ]]; then
