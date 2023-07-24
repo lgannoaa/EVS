@@ -1,0 +1,57 @@
+#PBS -N jevs_href_precip_stats
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=02:00:00
+#PBS -l place=vscatter:exclhost,select=1:ncpus=88:mem=10GB
+#PBS -l debug=true
+
+model=evs
+%include <head.h>
+%include <envir-p1.h>
+
+############################################################
+# Load modules
+############################################################
+set -x
+export COMPONENT=cam
+export STEP=stats
+source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+module list
+
+############################################################
+# Specify environment variables
+############################################################
+export OMP_NUM_THREADS=1
+export NET=evs
+export RUN=atmos
+export VERIF_CASE=precip
+export MODELNAME=href
+export KEEPDATA=YES
+export COMIN=${COMevs}
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix/masks
+export MASKS=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix/masks
+export COMOUT=${COMevs}
+export pid=${pid:-$$}
+export outid=${outid:-"LL$job"}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+export prepare=yes
+export run_mpi=yes
+export verif_precip=yes
+export verif_snowfall=yes
+export gather=yes
+
+############################################################
+# Execute j-job
+############################################################
+${HOMEevs}/jobs/cam/stats/JEVS_CAM_STATS
+if [ $? -ne 0 ]; then
+   ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
+   ecflow_client --abort
+   exit
+fi
+
+%include <tail.h>
+%manual
+%end

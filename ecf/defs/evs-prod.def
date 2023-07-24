@@ -7,7 +7,7 @@ suite evs_prod
     edit PACKAGEHOME '/lfs/h2/emc/global/noscrub/%EMC_USER%/para/packages/evs.%evs_ver%'
     edit NET 'evs'
     edit RUN 'evs'
-    edit PROJ 'GFS'
+    edit PROJ 'VERF'
     edit PROJENVIR 'DEV'
     edit MACHINE_SITE 'development'
     edit ENVIR 'prod'
@@ -72,7 +72,6 @@ suite evs_prod
         task jevs_naefs_atmos_prep
           time 07:00
         task jevs_global_ens_wave_grid2obs_prep
-        task jevs_global_ens_prep
         task jevs_global_ens_headline_prep
         task jevs_global_ens_atmos_prep
       endfamily
@@ -81,13 +80,7 @@ suite evs_prod
         task jevs_naefs_atmos_precip_stats
         task jevs_naefs_atmos_grid2obs_stats
         task jevs_naefs_atmos_grid2grid_stats
-        task jevs_global_ens_wmo_stats
         task jevs_global_ens_wave_grid2obs_stats
-        task jevs_global_ens_tropcyc_stats
-        task jevs_global_ens_extropcyc_stats
-        task jevs_global_ens_atmos_grid2obs_stats
-        task jevs_global_ens_atmos_grid2grid_stats
-        task jevs_global_ens_aerosol_stats
         task jevs_gfs_headline_grid2grid_stats
         task jevs_gefs_wmo_grid2grid_stats
         task jevs_gefs_headline_grid2grid_stats
@@ -116,12 +109,6 @@ suite evs_prod
         task jevs_naefs_grid2grid_past90days_plots
         task jevs_naefs_grid2grid_past31days_plots
         task jevs_global_ens_wave_grid2obs_plots
-        task jevs_global_ens_tropcyc_plots
-        task jevs_global_ens_plots
-        task jevs_global_ens_extropcyc_plots
-        task jevs_global_ens_atmos_grid2obs_plots
-        task jevs_global_ens_atmos_grid2grid_plots
-        task jevs_global_ens_aerosol_plots
         task jevs_gefs_sst_past90days_plots
         task jevs_gefs_sst_past31days_plots
         task jevs_gefs_snowfall_past90days_plots
@@ -159,10 +146,8 @@ suite evs_prod
           time 07:00
       endfamily
       family stats
-        task jevs_gefs_subseasonal_stats
         task jevs_gefs_subseasonal_grid2obs_stats
         task jevs_gefs_subseasonal_grid2grid_stats
-        task jevs_cfs_subseasonal_stats
         task jevs_cfs_subseasonal_grid2obs_stats
         task jevs_cfs_subseasonal_grid2grid_stats
       endfamily
@@ -184,36 +169,6 @@ suite evs_prod
           cron 00:00 23:00 01:00
       endfamily
     endfamily  # subseasonal
-    family seasonal
-      edit MODEL 'seasonal'
-      family prep
-        task jevs_seasonal_prep
-          time 07:00
-      endfamily
-      family stats
-        task jevs_seasonal_stats
-      endfamily
-      family plots
-        task jevs_seasonal_plots
-      endfamily
-      family seasonal_manager
-        task next_run
-          cron 00:00 23:00 01:00
-      endfamily
-    endfamily  # seasonal
-    family nwps
-      edit MODEL 'nwps'
-      family stats
-        task jevs_nwps_stats
-      endfamily
-      family plots
-        task jevs_nwps_plots
-      endfamily
-      family nwps_manager
-        task next_run
-          cron 00:00 23:00 01:00
-      endfamily
-    endfamily  # nwps
     family nfcens
       edit MODEL 'nfcens'
       family prep
@@ -249,10 +204,8 @@ suite evs_prod
       family stats
         task jevs_sref_precip_stats
         task jevs_sref_grid2obs_stats
-        task jevs_sref_grid2grid_stats
         task jevs_sref_cnv_stats
         task jevs_rap_snowfall_stats
-        task jevs_rap_smoke_stats
         task jevs_rap_precip_stats
         task jevs_rap_grid2obs_stats
         task jevs_nam_snowfall_stats
@@ -274,54 +227,6 @@ suite evs_prod
           cron 00:00 23:00 01:00
       endfamily
     endfamily  # mesoscale
-    family hysplit
-      edit MODEL 'hysplit'
-      family stats
-        task jevs_hysplit_stats
-      endfamily
-      family plots
-        task jevs_hysplit_plots
-      endfamily
-      family hysplit_manager
-        task next_run
-          cron 00:00 23:00 01:00
-      endfamily
-    endfamily  # hysplit
-    family hurricane
-      edit MODEL 'hurricane'
-      family stats
-        task jevs_hwrf_stats
-        task jevs_hurricane_regional_tropcyc_stats
-        task jevs_hurricane_global_ens_tropcyc_stats
-        task jevs_hurricane_global_det_tropcyc_stats
-        task jevs_hurricane_global_det_tcgen_stats
-        task jevs_hmon_stats
-      endfamily
-      family plots
-        task jevs_hurricane_regional_tropcyc_plots
-        task jevs_hurricane_plots
-        task jevs_hurricane_global_ens_tropcyc_plots
-        task jevs_hurricane_global_det_tropcyc_plots
-        task jevs_hurricane_global_det_tcgen_plots
-      endfamily
-      family hurricane_manager
-        task next_run
-          cron 00:00 23:00 01:00
-      endfamily
-    endfamily  # hurricane
-    family glwu
-      edit MODEL 'glwu'
-      family stats
-        task jevs_glwu_stats
-      endfamily
-      family plots
-        task jevs_glwu_plots
-      endfamily
-      family glwu_manager
-        task next_run
-          cron 00:00 23:00 01:00
-      endfamily
-    endfamily  # glwu
     family global_det
       edit MODEL 'global_det'
       family prep
@@ -337,10 +242,7 @@ suite evs_prod
         task jevs_jma_atmos_grid2grid_stats
         task jevs_imd_atmos_grid2obs_stats
         task jevs_imd_atmos_grid2grid_stats
-        task jevs_global_det_wmo_stats
         task jevs_global_det_wave_grid2obs_stats
-        task jevs_global_det_tropcyc_stats
-        task jevs_global_det_extopcyc_stats
         task jevs_global_det_atmos_long_term_stats
         task jevs_gfs_atmos_grid2obs_stats
         task jevs_gfs_atmos_grid2grid_stats
@@ -356,10 +258,7 @@ suite evs_prod
         task jevs_cfs_atmos_grid2grid_stats
       endfamily
       family plots
-        task jevs_global_det_wmo_plots
         task jevs_global_det_wave_grid2obs_plots
-        task jevs_global_det_tropcyc_plots
-        task jevs_global_det_extropcyc_plots
         task jevs_global_det_atmos_long_term_plots
         task jevs_global_det_atmos_headline_plots
         task jevs_global_det_atmos_grid2obs_sfc_plots_90days
@@ -411,54 +310,33 @@ suite evs_prod
         task jevs_cam_radar_prep
       endfamily
       family stats
-        task jevs_namnest_severe
-        task jevs_namnest_radar_stats
         task jevs_namnest_precip_stats
         task jevs_namnest_grid2obs_stats
         task jevs_nam_firewxnest_grid2obs_stats
-        task jevs_hrrr_smoke_stats
-        task jevs_hrrr_severe_stats
-        task jevs_hrrr_radar_stats
         task jevs_hrrr_precip_stats
         task jevs_hrrr_grid2obs_stats
-        task jevs_href_severe_stats
-        task jevs_href_radar_stats
         task jevs_href_precip_stats
         task jevs_href_grid2obs_stats
-        task jevs_hireswfv3_severe_stats
-        task jevs_hireswfv3_radar_stats
         task jevs_hireswfv3_precip_stats
         task jevs_hireswfv3_grid2obs_stats
-        task jevs_hireswarw_severe_stats
-        task jevs_hireswarw_radar_stats
         task jevs_hireswarw_precip_stats
-        task jevs_hireswarwmem2_severe_stats
-        task jevs_hireswarwmem2_radar_stats
         task jevs_hireswarwmem2_precip_stats
         task jevs_hireswarwmem2_grid2obs_stats
         task jevs_hireswarw_grid2obs_stats
       endfamily
       family plots
-        task jevs_namnest_severe
         task jevs_nam_firewxnest_grid2obs_plots
         task jevs_href_snowfall_past90days_plots
         task jevs_href_snowfall_past31days_plots
-        task jevs_href_severe_plots
-        task jevs_href_radar_plots
         task jevs_href_profile_past90days_plots
         task jevs_href_profile_past31days_plots
         task jevs_href_precip_spatial_plots
-        task jevs_href_precip_plots
         task jevs_href_precip_past90days_plots
         task jevs_href_precip_past31days_plots
-        task jevs_href_grid2obs_plots
         task jevs_href_grid2obs_ecnt_past90days_plots
         task jevs_href_grid2obs_ecnt_past31days_plots
         task jevs_href_grid2obs_ctc_past90days_plots
         task jevs_href_grid2obs_ctc_past31days_plots
-        task jevs_cam_smoke_plots
-        task jevs_cam_severe_plots
-        task jevs_cam_radar_plots
         task jevs_cam_precip_plots
         task jevs_cam_grid2obs_plots
       endfamily

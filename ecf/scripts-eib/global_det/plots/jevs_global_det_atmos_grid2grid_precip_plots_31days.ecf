@@ -1,0 +1,61 @@
+#PBS -N jevs_global_det_atmos_grid2grid_precip_plots_31days
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=00:20:00
+#PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1:mem=45GB
+#PBS -l debug=true
+
+model=evs
+%include <head.h>
+%include <envir-p1.h>
+
+############################################################
+# Load modules
+############################################################
+set -x
+export COMPONENT=global_det
+export STEP=plots
+source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+module list
+
+############################################################
+# Specify environment variables
+############################################################
+export SENDCOM=YES
+export USE_CFP=YES
+export NET=evs
+export RUN=atmos
+export VERIF_CASE=grid2grid
+export VERIF_TYPE=precip
+export NDAYS=31
+export PDYm1=$(date -d "24 hours ago" '+%Y%m%d')
+export COMIN=${COMevs}
+export COMINgfs=$COMIN/stats/$COMPONENT/gfs
+export COMINcmc=$COMIN/stats/$COMPONENT/cmc
+export COMINcmc_regional=$COMIN/stats/$COMPONENT/cmc_regional
+export COMINdwd=$COMIN/stats/$COMPONENT/dwd
+export COMINecmwf=$COMIN/stats/$COMPONENT/ecmwf
+export COMINjma=$COMIN/stats/$COMPONENT/jma
+export COMINmetfra=$COMIN/stats/$COMPONENT/metfra
+export COMINukmet=$COMIN/stats/$COMPONENT/ukmet
+export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN.$PDYm1
+export pid=${pid:-$$}
+export outid=${outid:-"LL$job"}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${VERIF_TYPE}
+
+############################################################
+# Execute j-job
+############################################################
+$HOMEevs/jobs/global_det/plots/JEVS_GLOBAL_DET_PLOTS
+if [ $? -ne 0 ]; then
+   ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
+   ecflow_client --abort
+   exit
+fi
+
+%include <tail.h>
+%manual
+%end

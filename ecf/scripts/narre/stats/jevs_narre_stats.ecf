@@ -1,8 +1,8 @@
 #PBS -N jevs_narre_stats
 #PBS -j oe
 #PBS -S /bin/bash
-#PBS -q dev
-#PBS -A VERF-DEV
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
 #PBS -l walltime=00:45:00
 #PBS -l place=vscatter,select=1:ncpus=16:mem=500GB
 #PBS -l debug=true
@@ -15,6 +15,9 @@ model=evs
 # Load modules
 ############################################################
 set -x
+export COMPONENT=narre
+export STEP=stats
+# source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
 
 # module load libjpeg/$libjpeg_ver
 export HPC_OPT=/apps/ops/para/libs
@@ -40,11 +43,9 @@ module load metplus/$metplus_ver
 module load udunits/${udunits_ver}
 module list
 
-export envir=prod
+#export envir=prod
 export OMP_NUM_THREADS=1
 export NET=evs
-export STEP=stats
-export COMPONENT=narre
 export RUN=atmos
 export VERIF_CASE=grid2obs
 export MODELNAME=narre

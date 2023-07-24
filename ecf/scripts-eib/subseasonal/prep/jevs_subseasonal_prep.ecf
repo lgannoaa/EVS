@@ -1,0 +1,46 @@
+#PBS -N jevs_subseasonal_prep
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=02:00:00
+#PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1:mem=140GB
+#PBS -l debug=true
+
+model=evs
+%include <head.h>
+%include <envir-p1.h>
+
+############################################################
+# Load modules
+############################################################
+set -x
+export COMPONENT=subseasonal
+export STEP=prep
+source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+module list
+
+############################################################
+# Specify environment variables
+############################################################
+export USE_CFP=YES
+export NET=evs
+export RUN=atmos
+export MODELNAME="gefs cfs"
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
+export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN
+export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.${model}.${COMPONENT}.${STEP}
+
+############################################################
+# Execute j-job
+############################################################
+$HOMEevs/jobs/subseasonal/prep/JEVS_SUBSEASONAL_PREP
+if [ $? -ne 0 ]; then
+   ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
+   ecflow_client --abort
+   exit
+fi
+
+%include <tail.h>
+%manual
+%end

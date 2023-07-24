@@ -1,0 +1,55 @@
+#PBS -N jevs_global_det_atmos_long_term_plots
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=02:00:00
+#PBS -l select=1:ncpus=1
+#PBS -l debug=true
+
+model=evs
+%include <head.h>
+%include <envir-p1.h>
+
+############################################################
+# Load modules
+############################################################
+set -x
+export COMPONENT=global_det
+export STEP=plots
+source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+module list
+
+############################################################
+# Specify environment variables
+############################################################
+export SENDCOM=YES
+export MET_bin_exec=bin
+export NET=evs
+export RUN=long_term
+export PDY=$(date '+%Y%m%d')
+export COMIN=${COMevs}
+export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN
+export COMINdailystats=$COMIN/stats/$COMPONENT
+export COMINmonthlystats=$COMIN/stats/$COMPONENT/$RUN/monthly_means
+export COMINyearlystats=$COMIN/stats/$COMPONENT/$RUN/annual_means
+export pid=${pid:-$$}
+export outid=${outid:-"LL$job"}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+# Set year and month
+export VDATEYYYY=$(date -d "1 month ago" '+%Y')
+export VDATEmm=$(date -d "1 month ago" '+%m')
+
+############################################################
+# Execute j-job
+############################################################
+$HOMEevs/jobs/global_det/plots/JEVS_GLOBAL_DET_ATMOS_LONG_TERM_PLOTS
+if [ $? -ne 0 ]; then
+   ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
+   ecflow_client --abort
+   exit
+fi
+
+%include <tail.h>
+%manual
+%end

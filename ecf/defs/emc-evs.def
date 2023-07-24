@@ -7,7 +7,7 @@ suite emc_evs
     edit PACKAGEHOME '/lfs/h2/emc/global/noscrub/%EMC_USER%/para/packages/evs.%evs_ver%'
     edit NET 'evs'
     edit RUN 'evs'
-    edit PROJ 'GFS'
+    edit PROJ 'VERF'
     edit PROJENVIR 'DEV'
     edit MACHINE_SITE 'development'
     edit ENVIR 'prod'
