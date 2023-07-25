@@ -1,6 +1,6 @@
 #!/bin/ksh
 
-set -x
+set +x
 
 #vday=20221003
 #COMINobs=/lfs/h1/ops/prod/com/obsproc/v1.0

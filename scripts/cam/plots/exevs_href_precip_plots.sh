@@ -164,10 +164,10 @@ for stats in ets_fbias ratio_pod_csi fss ; do
 
          chmod +x  run_py.${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh
 
-         echo "run_py.${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh" >> run_${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh
+         echo "${DATA}/run_py.${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh" >> run_${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh
 
          chmod +x  run_${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh 
-         echo "run_${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh" >> run_all_poe.sh
+         echo "${DATA}/run_${stats}.${score_type}.${lead}.${VAR}.${FCST_LEVEL_value}.${line_type}.${VX_MASK_LIST}.sh" >> run_all_poe.sh
 
       done #end of line_type
 
@@ -187,9 +187,9 @@ chmod +x run_all_poe.sh
 
 if [ $run_mpi = yes ] ; then
   export LD_LIBRARY_PATH=/apps/dev/pmi-fix:$LD_LIBRARY_PATH
-   mpiexec -np 54 -ppn 54 --cpu-bind verbose,depth cfp run_all_poe.sh
+   mpiexec -np 54 -ppn 54 --cpu-bind verbose,depth cfp ${DATA}/run_all_poe.sh
 else
-  run_all_poe.sh
+  ${DATA}/run_all_poe.sh
 fi
 
 
@@ -197,13 +197,13 @@ cd $plot_dir
 
 for stats in ets fbias fss ; do
   score_type='threshold_average' 
-  scoretype='thresholdmean'
+  scoretype='threshmean'
 
   for var in apcp_01 apcp_03 apcp_24 ; do
     level=${var:5:2}h
     if [ $stats = fss ] ; then 
        if [ $var = apcp_01 ] ; then
-        valid=valid_00z-21z
+        valid=valid_00z_03z_06z_09z_12z_15z_18z_21z
         lead=width1-3-5-7-9-11_f1_to_f24
        elif [ $var = apcp_03 ] ; then
         valid=valid_00z_03z_06z_09z_12z_15z_18z_21z
@@ -226,7 +226,7 @@ for stats in ets fbias fss ; do
     fi
 
    for domain in conus conus_east conus_west conus_south conus_central alaska  ; do
-      mv ${score_type}_regional_${domain}_${valid}_${level}_${var}_${stats}_${lead}.png  evs.href.${stats}.${var}h.last${past_days}days.${scoretype}.buk_${domain}.png
+      mv ${score_type}_regional_${domain}_${valid}_${level}_${var}_${stats}_${lead}.png  evs.href.${stats}.${var}h.last${past_days}days.${scoretype}_valid_all_times.buk_${domain}.png
    done
 
  done
@@ -250,7 +250,7 @@ for var in apcp_01 apcp_03 apcp_24 ; do
     fi
 
    for domain in conus conus_east conus_west conus_south conus_central alaska  ; do
-      mv ${score_type}_regional_${domain}_${valid}_${level}_${var}_${lead}.png  evs.href.ctc.${var}h.last${past_days}days.${scoretype}.buk_${domain}.png
+      mv ${score_type}_regional_${domain}_${valid}_${level}_${var}_${lead}.png  evs.href.ctc.${var}h.last${past_days}days.${scoretype}_valid_all_times.buk_${domain}.png
    done
 
 done

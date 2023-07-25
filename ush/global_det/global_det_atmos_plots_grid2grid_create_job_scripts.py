@@ -493,20 +493,20 @@ for nbrhd in make_plots_jobs_dict['precip']['24hrCCPA_Nbrhd']['interps']:
     (make_plots_jobs_dict['precip'][f"24hrCCPA_Nbrhd{nbrhd.split('/')[1]}"]\
      ['plots']) = ['time_series', 'lead_average']
 del make_plots_jobs_dict['precip']['24hrCCPA_Nbrhd']
-make_plots_jobs_dict['precip']['24hrCCPA_PerfDia'] = copy.deepcopy(
+make_plots_jobs_dict['precip']['24hrCCPA_PerfDiag'] = copy.deepcopy(
     make_plots_jobs_dict['precip']['24hrCCPA']
 )
-make_plots_jobs_dict['precip']['24hrCCPA_PerfDia']['line_type_stats'] = [
-    'CTC/PERF_DIA'
+make_plots_jobs_dict['precip']['24hrCCPA_PerfDiag']['line_type_stats'] = [
+    'CTC/PERFDIAG'
 ]
-make_plots_jobs_dict['precip']['24hrCCPA_PerfDia']['plots'] = [
+make_plots_jobs_dict['precip']['24hrCCPA_PerfDiag']['plots'] = [
     'performance_diagram'
 ]
-(make_plots_jobs_dict['precip']['24hrCCPA_PerfDia']\
+(make_plots_jobs_dict['precip']['24hrCCPA_PerfDiag']\
  ['fcst_var_dict']['threshs']) = [
     'ge0.1', 'ge0.5', 'ge1', 'ge5', 'ge10', 'ge25', 'ge50', 'ge75'
 ]
-(make_plots_jobs_dict['precip']['24hrCCPA_PerfDia']\
+(make_plots_jobs_dict['precip']['24hrCCPA_PerfDiag']\
  ['obs_var_dict']['threshs']) = [
     'ge0.1', 'ge0.5', 'ge1', 'ge5', 'ge10', 'ge25', 'ge50', 'ge75'
 ]
@@ -583,16 +583,16 @@ for sea_ice_job in list(make_plots_jobs_dict['sea_ice'].keys()):
     ]
 for hemisphere in ['NH', 'SH']:
     (make_plots_jobs_dict['sea_ice']\
-     ['DailyAvg_Concentration'+hemisphere+'_PerfDia']) = copy.deepcopy(
+     ['DailyAvg_Concentration'+hemisphere+'_PerfDiag']) = copy.deepcopy(
          make_plots_jobs_dict['sea_ice']\
          ['DailyAvg_Concentration'+hemisphere+'_Thresh']
     )
     (make_plots_jobs_dict['sea_ice']\
-     ['DailyAvg_Concentration'+hemisphere+'_PerfDia']['line_type_stats']) = [
-        'CTC/PERF_DIA'
+     ['DailyAvg_Concentration'+hemisphere+'_PerfDiag']['line_type_stats']) = [
+        'CTC/PERFDIAG'
     ]
     (make_plots_jobs_dict['sea_ice']\
-     ['DailyAvg_Concentration'+hemisphere+'_PerfDia']['plots']) = [
+     ['DailyAvg_Concentration'+hemisphere+'_PerfDiag']['plots']) = [
         'performance_diagram'
     ]
 #### snow
@@ -720,20 +720,11 @@ for verif_type in VERIF_CASE_STEP_type_list:
                                    valid_hr_end+valid_hr_inc,
                                    valid_hr_inc))
             if 'Daily' in verif_type_job:
-                if job_env_dict['fhr_inc'] != '24':
-                    job_env_dict['fhr_inc'] = '24'
-                if int(job_env_dict['fhr_end'])%24 != 0:
-                    job_env_dict['fhr_end'] = str(
-                        int(job_env_dict['fhr_end'])
-                         -(int(job_env_dict['fhr_end'])%24)
-                    )
-                if int(job_env_dict['fhr_start'])%24 != 0:
-                    job_env_dict['fhr_start'] = str(
-                        int(job_env_dict['fhr_start'])
-                        -(int(job_env_dict['fhr_start'])%24)
-                    )
-                if int(job_env_dict['fhr_start']) < 24:
-                    job_env_dict['fhr_start'] = '24'
+                daily_fhr_list = []
+                for fhr in job_env_dict['fhr_list'].split(','):
+                    if int(fhr) >= 24 and int(fhr) % 24 == 0:
+                        daily_fhr_list.append(str(fhr))
+                    job_env_dict['fhr_list'] = ','.join(daily_fhr_list)
         if JOB_GROUP in ['condense_stats', 'filter_stats', 'make_plots']:
             if verif_type == 'pres_levs':
                 obs_list = (

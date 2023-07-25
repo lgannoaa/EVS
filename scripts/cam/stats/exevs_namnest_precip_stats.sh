@@ -53,6 +53,13 @@ for NEST in $NEST_LIST; do
             [[ $status -eq 0 ]] && echo "Successfully ran cam_check_settings.py ($job_type)"
             echo
  
+            # Check Availability of Input Data
+            python $USHevs/cam/cam_check_input_data.py
+            status=$?
+            [[ $status -ne 0 ]] && exit $status
+            [[ $status -eq 0 ]] && echo "Successfully ran cam_check_input_data.py ($job_type)"
+            echo
+     
             # Create Output Directories
             python $USHevs/cam/cam_create_output_dirs.py
             status=$?
@@ -102,10 +109,12 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
+    set +x
     while [ $nc -le $ncount_job ]; do
-        sh +x ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
+        ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 NEST_LIST="conus ak" 
@@ -197,10 +206,12 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
+    set +x
     while [ $nc -le $ncount_job ]; do
-        sh +x ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
+        ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 export job_type="gather"
@@ -261,10 +272,12 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
+    set +x
     while [ $nc -le $ncount_job ]; do
-        sh +x ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
+        ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 export job_type="gather2"
@@ -322,10 +335,12 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
+    set +x
     while [ $nc -le $ncount_job ]; do
-        sh +x ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
+        ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 # Copy files to desired location
@@ -407,10 +422,12 @@ if [ "$cyc" -ge "$last_cyc" ]; then
             nc=$((nc+1))
         done
     else
+        set +x
         while [ $nc -le $ncount_job ]; do
-            sh +x ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
+            ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
             nc=$((nc+1))
         done
+        set -x
     fi
 fi
 

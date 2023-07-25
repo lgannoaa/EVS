@@ -1,8 +1,7 @@
-#!/bin/bash -e
- 
+#!/usr/bin/env python3
 # =============================================================================
 #
-# NAME: cam_stats_precip_create_job_script.sh
+# NAME: cam_stats_precip_create_job_script.py
 # CONTRIBUTOR(S): Marcel Caron, marcel.caron@noaa.gov, NOAA/NWS/NCEP/EMC-VPPPGB
 # PURPOSE: Create EVS CAM Precipitation - Statistics job scripts
 # DEPENDENCIES: $SCRIPTSevs/cam/stats/exevs_$MODELNAME_precip_stats.sh
@@ -37,6 +36,9 @@ MET_CONFIG_OVERRIDES = os.environ['MET_CONFIG_OVERRIDES']
 METPLUS_VERBOSITY = os.environ['METPLUS_VERBOSITY']
 MET_VERBOSITY = os.environ['MET_VERBOSITY']
 LOG_MET_OUTPUT_TO_METPLUS = os.environ['LOG_MET_OUTPUT_TO_METPLUS']
+machine_conf = os.path.join(
+    os.environ['PARMevs'], 'metplus_config', 'machine.conf'
+)
 if job_type == 'reformat':
     VERIF_TYPE = os.environ['VERIF_TYPE']
     NEST = os.environ['NEST']
@@ -238,34 +240,34 @@ if VERIF_CASE == 'precip':
     elif STEP == 'stats':
         if job_type == 'reformat':
             job_cmd_list_iterative.append(
-                f'{metplus_launcher} -c '
-                + f'{MET_PLUS_CONF}/'
+                f'{metplus_launcher} -c {machine_conf} '
+                + f'-c {MET_PLUS_CONF}/'
                 + f'PCPCombine_fcst{COMPONENT.upper()}_obs{OBSNAME.upper()}.conf'
             )
         if job_type == 'generate':
             job_cmd_list_iterative.append(
-                f'{metplus_launcher} -c '
-                + f'{MET_PLUS_CONF}/'
+                f'{metplus_launcher} -c {machine_conf} '
+                + f'-c {MET_PLUS_CONF}/'
                 + f'GridStat_fcst{COMPONENT.upper()}_obs{OBSNAME.upper()}.conf'
             )
         elif job_type == 'gather':
             job_cmd_list.append(
-                f'{metplus_launcher} -c '
-                + f'{MET_PLUS_CONF}/'
+                f'{metplus_launcher} -c {machine_conf} '
+                + f'-c {MET_PLUS_CONF}/'
                 + f'StatAnalysis_fcst{COMPONENT.upper()}_obs{OBSNAME.upper()}'
                 + f'_GatherByDay.conf'
             )
         elif job_type == 'gather2':
             job_cmd_list.append(
-                f'{metplus_launcher} -c '
-                + f'{MET_PLUS_CONF}/'
+                f'{metplus_launcher} -c {machine_conf} '
+                + f'-c {MET_PLUS_CONF}/'
                 + f'StatAnalysis_fcst{COMPONENT.upper()}'
                 + f'_GatherByCycle.conf'
             )
         elif job_type == 'gather3':
             job_cmd_list.append(
-                f'{metplus_launcher} -c '
-                + f'{MET_PLUS_CONF}/'
+                f'{metplus_launcher} -c {machine_conf} '
+                + f'-c {MET_PLUS_CONF}/'
                 + f'StatAnalysis_fcst{COMPONENT.upper()}'
                 + f'_GatherByDay.conf'
             )

@@ -27,7 +27,6 @@ module list
 export NET=evs
 export VDATE=$($NDATE -72 ${PDY}00| cut -c 1-8)
 export COMIN=${COMevs}
-export COMINobs=/lfs/h1/ops/dev/dcom
 export COMINrtofs=$(compath.py ${COMPONENT}/v2.3)
 export COMOUT=${COMevs}
 export COMOUTprep=${COMevs}/$STEP/$COMPONENT
@@ -50,10 +49,4 @@ fi
 
 %include <tail.h>
 %manual
-######################################################################
-# Purpose: The job and task scripts work together to pre-process RTOFS
-#          forecast data into the same spatial and temporal scales
-#          as validation data.
-# Author: L. Gwen Chen (lichuan.chen@noaa.gov)
-######################################################################
 %end

@@ -75,16 +75,19 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
+    set +x
     while [ $nc -le $ncount_job ]; do
-        sh +x ${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/job${nc}
+        ${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 # Copy files to desired location
 #all commands to copy output files into the correct EVS COMOUT directory
 if [ $SENDCOM = YES ]; then
-    find ${DATA}/${VERIF_CASE}/out/*/*/*.png -type f -print | tar -cvf ${COMOUT}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.v${VDATE}.tar -T -
+    find ${DATA}/${VERIF_CASE}/out/*/*/*.png -type f -print | tar -cvf ${DATA}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.v${VDATE}.tar -T -
+    cp ${DATA}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.v${VDATE}.tar ${COMOUTplots}/.
 fi
 
 # Non-production jobs

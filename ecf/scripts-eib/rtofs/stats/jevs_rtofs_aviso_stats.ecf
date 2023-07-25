@@ -28,7 +28,6 @@ export RUN=aviso
 export RUNupper=AVISO
 export VDATE=$($NDATE -72 ${PDY}00| cut -c 1-8)
 export COMIN=${COMevs}
-export COMINobs=/lfs/h1/ops/dev/dcom
 export COMINfcst=${COMevs}/prep/$COMPONENT
 export COMINclimo=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix/climos/$COMPONENT
 export COMOUT=${COMevs}
