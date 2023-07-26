@@ -7,10 +7,13 @@ set -xa
 #######################################################
 #######################################################
 
-export cycle=t${cyc}z
+#### export cycle=t${cyc}z
+export cyc=${cyc:-"00"}
+export cycle=${cycle:-t${cyc}z}
 
 export pid=$$
-export DATA=${DATA:-${DATAROOT:?}}/${jobid:?}
+#### export DATA=${DATA:-${DATAROOT:?}}/${jobid:?}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 mkdir -p $DATA
 cd $DATA
 
