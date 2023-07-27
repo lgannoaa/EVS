@@ -1,0 +1,97 @@
+#PBS -S /bin/bash
+#PBS -N %RUN%_global_ens_next_run
+#PBS -j oe
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=00:05:00
+#PBS -l place=vscatter,select=1:ncpus=1:mem=1GB
+#PBS -l debug=true
+#### Development use only to enable running in retro and debug mode.
+#### Not intended for NCO code delivery
+model=evs
+%include <head.h>
+%include <envir-p1.h>
+
+set -x
+
+export NET=%NET%
+export RUN=%RUN%
+export MODEL=%MODEL%
+export COMPONENT=global_ens
+
+############################################################
+# Load modules
+############################################################
+
+module list
+
+# export COMINrtofs=$(compath.py ${COMPONENT}/v2.3)
+# export VDATE=$($NDATE -48 ${PDY}00| cut -c 1-8)
+export DATA=${DATAROOT}/emc_ecflow_pdy.date.$$.$RANDOM
+export cycle=t00z
+mkdir -p $DATA
+cd $DATA
+setpdy.sh
+. ./PDY
+
+export COMIN=${COMIN:-$(compath.py $envir/com/$NET/$evs_ver)}
+export COMIN_gefs=${COMIN}/${STEP}/${COMPONENT}/atmos.${INITDATE}/gefs
+export COMIN_gefs_bc=${COMIN}/${STEP}/${COMPONENT}/atmos.${INITDATE}/gefs_bc
+export COMIN_cmce=${COMIN}/${STEP}/${COMPONENT}/atmos.${INITDATE}/cmce
+export COMIN_cmce_bc=${COMIN}/${STEP}/${COMPONENT}/atmos.${INITDATE}/cmce_bc
+export COMOUT_gefs=${COMIN}/${STEP}/${COMPONENT}/headline.${INITDATE}/gefs
+export COMOUT_cmce=${COMIN}/${STEP}/${COMPONENT}/headline.${INITDATE}/cmce
+export COMINgfsanl=${COMINgfs:-$(compath.py $envir/com/gfs/${gfs_ver})}
+export COMINgefs=${COMINgefs:-$(compath.py $envir/com/gefs/${gefs_ver})}
+export COMINnaefs=${COMINnaefs:-$(compath.py $envir/com/naefs/${naefs_ver})}
+export DCOMIN=${DCOMIN:-${DCOMROOT}}
+export COMINccpa=${COMINccpa:-$(compath.py $envir/com/ccpa/${ccpa_ver})}
+export COMINcmce=$COMINnaefs
+export COMINprepbufr=${COMINprepbufe:-$(compath.py $envir/com/obsproc/${obsproc_ver})}
+export COMINsnow=${DCOMIN}
+export COMINosi_saf=${COMINosi_saf:-/lfs/h1/ops/dev/dcom}
+export COMINsst=${COMINsst:-/lfs/h1/ops/dev/dcom}
+export COMINgefs_bc=${COMINgefs_bc:-$COMINnaefs}
+export COMINcmce_bc=${DCOMIN}
+
+rq1=$(ecflow_client --query state /evs_prod/primary/global_ens/prep)
+rq2=$(ecflow_client --query state /evs_prod/primary/global_ens/stats)
+rq3=$(ecflow_client --query state /evs_prod/primary/global_ens/plots)
+rq5="TRUE"
+
+# Check if required production file exist for start the next run
+#leads='gefs gefs_bc cmce'
+#for lead in ${leads}; do
+#  pattern="rtofs_glo_*_${lead}_*.nc"
+#  file_ct=$(ls $COMINrtofs/rtofs.$VDATE/${pattern}|wc -l)
+#  [[ $file_ct -lt 5 ]] && rq5="FALSE"
+#done
+export COMIN_gefs=${COMIN}/${STEP}/${COMPONENT}/atmos.${PDYm1}/gefs
+file_ct=$(ls $COMIN_gefs|wc -l)
+[[ $file_ct -lt 14707 ]] && rq5="FALSE"
+export COMIN_gefs=${COMIN}/${STEP}/${COMPONENT}/atmos.${PDYm2}/gefs
+file_ct=$(ls COMIN${COMPONENT}/atmos.${PDYm2}/gefs|wc -l)
+[[ $file_ct -lt 14707 ]] && rq5="FALSE"
+
+
+cd $DATAROOT
+rm -rf $DATA
+
+# Set PDY to the next day
+if [ $rq1 = "complete" -a $rq2 = "complete" -a $rq3 = "complete" -a $rq5 = "TRUE" ]; then
+  ecflow_client --alter change variable PDY $PDYp1 /evs_prod/primary/rtofs
+  ecflow_client --requeue=force /evs_prod/primary/global_ens/prep
+  ecflow_client --requeue=force /evs_prod/primary/global_ens/stats
+  ecflow_client --requeue=force /evs_prod/primary/global_ens/plots
+fi
+
+%include <tail.h>
+%manual
+######################################################################
+# Purpose: The ecflow workflow control task to ensure: 
+#            (1) all jobs for current PDY completed
+#            (2) all required file for next run exist
+#          for ecflow workflow family to requeue and PDY advance
+# Author: Lin Gan (lin.gan@noaa.gov)
+######################################################################
+%end 

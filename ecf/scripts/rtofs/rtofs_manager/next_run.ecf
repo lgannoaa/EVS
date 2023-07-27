@@ -62,7 +62,7 @@ fi
 # Purpose: The ecflow workflow control task to ensure: 
 #            (1) all jobs for current PDY completed
 #            (2) all required file for next run exist
-#          for ecflow workflow RTOFS family to requeue and PDY advance
+#          for ecflow workflow family to requeue and PDY advance
 # Author: Lin Gan (lin.gan@noaa.gov)
 ######################################################################
 %end 
