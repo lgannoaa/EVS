@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #PBS -N jevs_narre_stats
 #PBS -j oe
 #PBS -S /bin/bash
@@ -41,6 +42,35 @@ export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 # Execute j-job
 ############################################################
 ${HOMEevs}/jobs/narre/stats/JEVS_NARRE_STATS
+=======
+#PBS -S /bin/bash
+#PBS -N jevs_narre_stats_%CYC%
+#PBS -j oe
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=00:30:00
+#PBS -l place=vscatter,select=1:ncpus=16:mem=500GB
+#PBS -l debug=true
+
+model="evs"
+export cyc=%CYC%
+export NET=%NET%
+
+%include <head.h>
+%include <envir-p1.h>
+
+export STEP=stats
+export COMPONENT=narre
+export RUN=atmos
+export VERIF_CASE=grid2obs
+export MODELNAME=narre
+
+# Load modules
+source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh  # TODO: exact name of modulefile TBD
+
+${HOMEevs}/jobs/${COMPONENT}/${STEP}/JEVS_${COMPONENT^^}_${STEP^^}
+
+>>>>>>> upstream/develop
 if [ $? -ne 0 ]; then
    ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
    ecflow_client --abort
@@ -48,5 +78,11 @@ if [ $? -ne 0 ]; then
 fi
 
 %include <tail.h>
+<<<<<<< HEAD
 %manual
+=======
+
+%manual
+
+>>>>>>> upstream/develop
 %end

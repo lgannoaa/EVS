@@ -1,12 +1,19 @@
+<<<<<<< HEAD
 #PBS -N jevs_narre_past31days_plot
 #PBS -j oe
 #PBS -S /bin/bash
+=======
+#PBS -S /bin/bash
+#PBS -N jevs_narre_plots_31days_%CYC%
+#PBS -j oe
+>>>>>>> upstream/develop
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
 #PBS -l walltime=02:30:00
 #PBS -l place=vscatter,select=1:ncpus=8:mem=1GB
 #PBS -l debug=true
 
+<<<<<<< HEAD
 model=evs
 %include <head.h>
 %include <envir-p1.h>
@@ -38,6 +45,28 @@ export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 # Execute j-job
 ############################################################
 ${HOMEevs}/jobs/narre/plots/JEVS_NARRE_PLOTS
+=======
+model="evs"
+export cyc=%CYC%
+export NET=%NET%
+
+%include <head.h>
+%include <envir-p1.h>
+
+export STEP=plots
+export COMPONENT=narre
+export RUN=atmos
+export VERIF_CASE=grid2obs
+export MODELNAME=narre
+
+# Load modules
+source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh  # TODO: exact name of modulefile TBD
+
+export past_days=31
+
+${HOMEevs}/jobs/narre/plots/JEVS_${COMPONENT^^}_${STEP^^}
+
+>>>>>>> upstream/develop
 if [ $? -ne 0 ]; then
    ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
    ecflow_client --abort
@@ -45,5 +74,11 @@ if [ $? -ne 0 ]; then
 fi
 
 %include <tail.h>
+<<<<<<< HEAD
 %manual
+=======
+
+%manual
+
+>>>>>>> upstream/develop
 %end
