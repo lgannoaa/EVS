@@ -1,0 +1,67 @@
+#PBS -S /bin/bash
+#PBS -N %RUN%_rtofs_next_run
+#PBS -j oe
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=00:05:00
+#PBS -l place=vscatter,select=1:ncpus=1:mem=1GB
+#PBS -l debug=true
+
+model=evs
+%include <head.h>
+%include <envir-p1.h>
+
+set -x
+
+export NET=%NET%
+export RUN=%RUN%
+export MODEL=%MODEL%
+export COMPONENT=rtofs
+
+############################################################
+# Load modules
+############################################################
+
+module list
+
+export COMINrtofs=$(compath.py ${COMPONENT}/v2.3)
+export VDATE=$($NDATE -72 ${PDY}00| cut -c 1-8)
+export DATA=${DATAROOT}/emc_ecflow_pdy.date.$$.$RANDOM
+export cycle=t00z
+mkdir -p $DATA
+cd $DATA
+setpdy.sh
+. ./PDY
+
+rq1=$(ecflow_client --query state /emc_evs/primary/rtofs/prep)
+rq2=$(ecflow_client --query state /emc_evs/primary/rtofs/stats)
+rq3=$(ecflow_client --query state /emc_evs/primary/rtofs/plots)
+rq5="TRUE"
+# Check if required production file exist for start the next run
+leads='n024 f024 f048 f072 f096 f120 f144 f168 f192'
+for lead in ${leads}; do
+  pattern="rtofs_glo_*_${lead}_*.nc"
+  file_ct=$(ls $COMINrtofs/rtofs.$VDATE/${pattern}|wc -l)
+  [[ $file_ct -lt 5 ]] && rq5="FALSE"
+done
+cd $DATAROOT
+rm -rf $DATA
+
+# Set PDY to the next day
+if [ $rq1 = "complete" -a $rq2 = "complete" -a $rq3 = "complete" -a $rq5 = "TRUE" ]; then
+  ecflow_client --alter change variable PDY $PDYp1 /emc_evs/primary/rtofs
+  ecflow_client --requeue=force /emc_evs/primary/rtofs/prep
+  ecflow_client --requeue=force /emc_evs/primary/rtofs/stats
+  ecflow_client --requeue=force /emc_evs/primary/rtofs/plots
+fi
+
+%include <tail.h>
+%manual
+######################################################################
+# Purpose: The ecflow workflow control task to ensure: 
+#            (1) all jobs for current PDY completed
+#            (2) all required file for next run exist
+#          for ecflow workflow RTOFS family to requeue and PDY advance
+# Author: Lin Gan (lin.gan@noaa.gov)
+######################################################################
+%end 

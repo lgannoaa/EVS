@@ -6,7 +6,8 @@
 #PBS -l walltime=00:05:00
 #PBS -l place=vscatter,select=1:ncpus=1:mem=1GB
 #PBS -l debug=true
-
+#### Development use only to enable running in retro and debug mode.
+#### Not intended for NCO code delivery
 model=evs
 %include <head.h>
 %include <envir-p1.h>
@@ -33,8 +34,8 @@ cd $DATA
 setpdy.sh
 . ./PDY
 
-rq2=$(ecflow_client --query state /emc_evs/primary/narre/stats)
-rq3=$(ecflow_client --query state /emc_evs/primary/narre/plots)
+rq2=$(ecflow_client --query state /evs_prod/primary/narre/stats)
+rq3=$(ecflow_client --query state /evs_prod/primary/narre/plots)
 rq5="TRUE"
 # Check if required production file exist for start the next run
 file_ct=$(ls $COMINnarre/narre.$VDATE/ensprod/$COMPONENT.t*z.mean.grd*.f*.grib2|wc -l)
@@ -45,9 +46,9 @@ rm -rf $DATA
 
 # Set PDY to the next day
 if [ $rq2 = "complete" -a $rq3 = "complete" -a $rq5 = "TRUE" ]; then
-  ecflow_client --alter change variable PDY $PDYp1 /emc_evs/primary/narre
-  ecflow_client --requeue=force /emc_evs/primary/narre/stats
-  ecflow_client --requeue=force /emc_evs/primary/narre/plots
+  ecflow_client --alter change variable PDY $PDYp1 /evs_prod/primary/narre
+  ecflow_client --requeue=force /evs_prod/primary/narre/stats
+  ecflow_client --requeue=force /evs_prod/primary/narre/plots
 fi
 
 %include <tail.h>

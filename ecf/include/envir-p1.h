@@ -34,5 +34,7 @@ fi
 export COMevs=$(compath.py evs/${evs_ver})
 export DATAFS=h1
 export DATAROOT=/lfs/h2/emc/stmp/${USER}/${model}/${PSLOT}
-export DCOMROOT=/lfs/h1/ops/prod/dcom
+# export DCOMROOT=/lfs/h1/ops/prod/dcom
+# export COMINobs=${DCOMROOT:-"/lfs/h1/ops/dev/dcom"}
+export COMINobs=/lfs/h1/ops/dev/dcom
 mkdir -p ${DATAROOT} # ${COMevs}

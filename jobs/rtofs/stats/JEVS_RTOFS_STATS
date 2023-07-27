@@ -21,7 +21,7 @@ export COMOUT=${COMOUT:-$(compath.py $NET/${evs_ver})}
 export COMOUTsmall=$COMOUT/$STEP/$COMPONENT/$RUN.$VDATE
 export COMOUTfinal=${COMOUTfinal:-$COMOUT/$STEP/$COMPONENT/$COMPONENT.$VDATE}
 export DATA=${DATA:-$DATAROOT/$NET/${evs_ver}}
-
+mkdir -p ${COMOUT} ${DATA}
 if [ $RUN = 'argo' ] ; then
   for vari in ${VARS}; do
     export VAR=$vari
