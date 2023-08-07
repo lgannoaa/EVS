@@ -1,10 +1,10 @@
 #PBS -N jevs_global_det_atmos_prep
 #PBS -j oe
 #PBS -S /bin/bash
-#PBS -q %QUEUE_ARCH%
+#PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
 #PBS -l walltime=00:30:00
-#PBS -l select=1:ncpus=1:mem=30GB
+#PBS -l select=1:ncpus=1:mem=80GB
 #PBS -l debug=true
 
 model=evs
@@ -29,6 +29,7 @@ export RUN=atmos
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN
 export MODELNAME="cfs cmc cmc_regional dwd ecmwf fnmoc imd jma metfra ukmet"
 export OBSNAME="osi_saf ghrsst_ospo"

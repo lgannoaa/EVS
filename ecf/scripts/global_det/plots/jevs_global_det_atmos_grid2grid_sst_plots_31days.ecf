@@ -3,8 +3,8 @@
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:10:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=32:ompthreads=1:mem=20GB
+#PBS -l walltime=03:30:00
+#PBS -l place=vscatter,select=1:ncpus=32:ompthreads=1:mem=25GB
 #PBS -l debug=true
 
 model=evs
@@ -23,6 +23,7 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+export nproc=32
 export SENDCOM=YES
 export USE_CFP=YES
 export NET=evs
@@ -30,17 +31,8 @@ export RUN=atmos
 export VERIF_CASE=grid2grid
 export VERIF_TYPE=sst
 export NDAYS=31
-export PDYm1=$(date -d "24 hours ago" '+%Y%m%d')
 export COMIN=${COMevs}
-export COMINcfs=$COMIN/stats/$COMPONENT/cfs
-export COMINgfs=$COMIN/stats/$COMPONENT/gfs
-export COMINcmc=$COMIN/stats/$COMPONENT/cmc
-export COMINecmwf=$COMIN/stats/$COMPONENT/ecmwf
-export COMINfnmoc=$COMIN/stats/$COMPONENT/fnmoc
-export COMINimd=$COMIN/stats/$COMPONENT/imd
-export COMINjma=$COMIN/stats/$COMPONENT/jma
-export COMINukmet=$COMIN/stats/$COMPONENT/ukmet
-export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN.$PDYm1
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

@@ -18,6 +18,6 @@ module load jasper/${jasper_ver}
 module load udunits/${udunits_ver}
 module load grib_util/${grib_util_ver}
 module load wgrib2/${wgrib2_ver}
-
+module load cdo/${cdo_ver}
 module list
 set -x

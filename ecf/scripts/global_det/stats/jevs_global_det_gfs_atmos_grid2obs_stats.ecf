@@ -1,10 +1,10 @@
-#PBS -N jevs_gfs_atmos_grid2obs_stats
+#PBS -N jevs_global_det_gfs_atmos_grid2obs_stats
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
 #PBS -l walltime=01:30:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1:mem=250GB
+#PBS -l place=vscatter,select=1:ncpus=128:ompthreads=1:mem=300GB
 #PBS -l debug=true
 
 model=evs
@@ -23,6 +23,7 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+export nproc=128
 export SENDCOM=YES
 export USE_CFP=YES
 export NET=evs
@@ -31,6 +32,7 @@ export VERIF_CASE=grid2obs
 export MODELNAME=gfs
 export COMIN=${COMevs}
 export COMOUT=${COMevs}/$STEP/$COMPONENT
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}

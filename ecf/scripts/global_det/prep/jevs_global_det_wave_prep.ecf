@@ -1,10 +1,10 @@
-#PBS -N jevs_ecmwf_atmos_grid2obs_stats
+#PBS -N jevs_global_det_wave_prep
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:20:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=14:ompthreads=1:mem=10GB
+#PBS -l walltime=00:30:00
+#PBS -l select=1:ncpus=1:mem=15GB
 #PBS -l debug=true
 
 model=evs
@@ -16,7 +16,7 @@ model=evs
 ############################################################
 set -x
 export COMPONENT=global_det
-export STEP=stats
+export STEP=prep
 source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
 module list
 
@@ -24,24 +24,21 @@ module list
 # Specify environment variables
 ############################################################
 export SENDCOM=YES
-export MET_bin_exec=bin
-export USE_CFP=YES
 export NET=evs
-export RUN=atmos
-export VERIF_CASE=grid2obs
-export MODELNAME=ecmwf
-export COMIN=${COMevs}
-export COMINecmwf=$COMIN/prep/$COMPONENT/$RUN
-export COMOUT=${COMevs}/$STEP/$COMPONENT
+export RUN=wave
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
-export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
+export COMINndbc=/lfs/h1/ops/dev/dcom
+export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN
+export MODELNAME="gfs"
+export OBSNAME="ndbc"
 
 ############################################################
 # Execute j-job
 ############################################################
-$HOMEevs/jobs/global_det/stats/JEVS_GLOBAL_DET_STATS
+$HOMEevs/jobs/global_det/prep/JEVS_GLOBAL_DET_PREP
 if [ $? -ne 0 ]; then
    ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
    ecflow_client --abort

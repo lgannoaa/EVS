@@ -4,10 +4,8 @@ set -xa
 #######################################################
 #######################################################
 
-export cycle=t${cyc}z
-
-export pid=$$
-export DATA=${DATA:-${DATAROOT:?}}/${jobid:?}
+export cycle=${cycle:-t00z}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 rm -rf $DATA
 mkdir -p $DATA
 cd $DATA

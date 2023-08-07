@@ -32,6 +32,8 @@ export past_days=90
 export run_mpi=yes
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
+export COMIN=${COMevs}
+export COMOUT=${COMevs}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 #### Remove before NCO code delivery
 export DCOMROOT=/lfs/h1/ops/dev/dcom

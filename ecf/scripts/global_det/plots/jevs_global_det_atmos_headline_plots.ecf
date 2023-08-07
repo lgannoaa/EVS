@@ -3,7 +3,7 @@
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:10:00
+#PBS -l walltime=03:10:00
 #PBS -l select=1:ncpus=1:mem=35GB
 #PBS -l debug=true
 
@@ -24,14 +24,12 @@ module list
 # Specify environment variables
 ############################################################
 export SENDCOM=YES
-export MET_bin_exec=bin
 export NET=evs
 export RUN=headline
-export PDYm1=$(date -d "24 hours ago" '+%Y%m%d')
+#export VDATE_END=$PDYm1
 export COMIN=${COMevs}
-export COMINdailystats=$COMIN/stats/$COMPONENT
-export COMINyearlystats=$COMIN/stats/$COMPONENT/long_term/annual_means
-export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN.$PDYm1
+#export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN.$VDATE_END
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
@@ -39,7 +37,7 @@ export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 ############################################################
 # Execute j-job
 ############################################################
-$HOMEevs/jobs/global_det/plots/JEVS_GLOBAL_DET_ATMOS_HEADLINE_PLOTS
+$HOMEevs/jobs/global_det/plots/JEVS_GLOBAL_DET_PLOTS
 if [ $? -ne 0 ]; then
    ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
    ecflow_client --abort

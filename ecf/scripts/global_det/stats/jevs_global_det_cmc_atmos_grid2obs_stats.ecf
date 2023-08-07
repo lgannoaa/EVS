@@ -1,10 +1,10 @@
-#PBS -N jevs_global_det_atmos_long_term_stats
+#PBS -N jevs_global_det_cmc_atmos_grid2obs_stats
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=05:00:00
-#PBS -l select=1:ncpus=1
+#PBS -l walltime=02:15:00
+#PBS -l place=vscatter,select=1:ncpus=14:ompthreads=1:mem=25GB
 #PBS -l debug=true
 
 model=evs
@@ -23,27 +23,26 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+export nproc=14
 export SENDCOM=YES
-export MET_bin_exec=bin
+export USE_CFP=YES
 export NET=evs
-export RUN=long_term
+export RUN=atmos
+export VERIF_CASE=grid2obs
+export MODELNAME=cmc
 export COMIN=${COMevs}
+export COMINcmc=$COMIN/prep/$COMPONENT/$RUN
 export COMOUT=${COMevs}/$STEP/$COMPONENT
-export COMINdailystats=$COMIN/$STEP/$COMPONENT
-export COMINmonthlystats=$COMIN/$STEP/$COMPONENT/$RUN/monthly_means
-export COMINyearlystats=$COMIN/$STEP/$COMPONENT/$RUN/annual_means
-export COMOUTmonthlystats=$COMOUT/$RUN/monthly_means
-export COMOUTyearlystats=$COMOUT/$RUN/annual_means
-export VDATEYYYY=$(date -d "1 month ago" '+%Y')
-export VDATEmm=$(date -d "1 month ago" '+%m')
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}
 
 ############################################################
 # Execute j-job
 ############################################################
-$HOMEevs/jobs/global_det/stats/JEVS_GLOBAL_DET_ATMOS_LONG_TERM_STATS
+$HOMEevs/jobs/global_det/stats/JEVS_GLOBAL_DET_STATS
 if [ $? -ne 0 ]; then
    ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
    ecflow_client --abort

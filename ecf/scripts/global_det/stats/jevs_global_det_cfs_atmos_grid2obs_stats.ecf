@@ -1,10 +1,10 @@
-#PBS -N jevs_fnmoc_atmos_grid2grid_stats
+#PBS -N jevs_global_det_cfs_atmos_grid2obs_stats
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:15:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=20:ompthreads=1:mem=5GB
+#PBS -l walltime=01:45:00
+#PBS -l place=vscatter,select=1:ncpus=28:ompthreads=1:mem=50GB
 #PBS -l debug=true
 
 model=evs
@@ -23,15 +23,18 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+export nproc=28
 export SENDCOM=YES
+export MET_bin_exec=bin
 export USE_CFP=YES
 export NET=evs
 export RUN=atmos
-export VERIF_CASE=grid2grid
-export MODELNAME=fnmoc
+export VERIF_CASE=grid2obs
+export MODELNAME=cfs
 export COMIN=${COMevs}
-export COMINfnmoc=$COMIN/prep/$COMPONENT/$RUN
+export COMINcfs=$COMIN/prep/$COMPONENT/$RUN
 export COMOUT=${COMevs}/$STEP/$COMPONENT
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

@@ -1,5 +1,5 @@
 #PBS -S /bin/bash
-#PBS -N %RUN%_global_ens_next_run
+#PBS -N %RUN%_global_det_next_run
 #PBS -j oe
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
@@ -17,7 +17,7 @@ set -x
 export NET=%NET%
 export RUN=%RUN%
 export MODEL=%MODEL%
-export COMPONENT=global_ens
+export COMPONENT=global_det
 
 ############################################################
 # Load modules
@@ -52,9 +52,9 @@ export COMINsst=${COMINsst:-/lfs/h1/ops/dev/dcom}
 export COMINgefs_bc=${COMINgefs_bc:-$COMINnaefs}
 export COMINcmce_bc=${DCOMIN}
 
-rq1=$(ecflow_client --query state /evs_prod/primary/global_ens/prep)
-rq2=$(ecflow_client --query state /evs_prod/primary/global_ens/stats)
-rq3=$(ecflow_client --query state /evs_prod/primary/global_ens/plots)
+rq1=$(ecflow_client --query state /evs_prod/primary/global_det/prep)
+rq2=$(ecflow_client --query state /evs_prod/primary/global_det/stats)
+rq3=$(ecflow_client --query state /evs_prod/primary/global_det/plots)
 rq5="TRUE"
 
 file_ct=$(ls $COMINgfsanl/gfs.${PDYm2}/00/atmos/gfs.*.pgrb2.1p00.*|wc -l)
@@ -73,10 +73,10 @@ rm -rf $DATA
 
 # Set PDY to the next day
 if [ $rq1 = "complete" -a $rq2 = "complete" -a $rq3 = "complete" -a $rq5 = "TRUE" ]; then
-  ecflow_client --alter change variable PDY $PDYp1 /evs_prod/primary/global_ens
-  ecflow_client --requeue=force /evs_prod/primary/global_ens/prep
-  ecflow_client --requeue=force /evs_prod/primary/global_ens/stats
-  ecflow_client --requeue=force /evs_prod/primary/global_ens/plots
+  ecflow_client --alter change variable PDY $PDYp1 /evs_prod/primary/global_det
+  ecflow_client --requeue=force /evs_prod/primary/global_det/prep
+  ecflow_client --requeue=force /evs_prod/primary/global_det/stats
+  ecflow_client --requeue=force /evs_prod/primary/global_det/plots
 fi
 
 %include <tail.h>

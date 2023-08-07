@@ -7,7 +7,7 @@ set -xa
 #######################################################
 #######################################################
 
-export cycle=t${cyc}z
+export cycle=${cycle:-t00z}
 
 export SENDCOM=${SENDCOM:-YES}
 export SENDDBN=${SENDDBN:-YES}
@@ -15,7 +15,6 @@ export SENDECF=${SENDECF:-YES}
 
 export COMIN=${COMIN:-$(compath.py  $envir/com/$NET/$evs_ver)}/stats/$COMPONENT/$MODELNAME.$VDATE
 export COMOUT=${COMOUT:-$(compath.py -o $envir/com/$NET/${evs_ver})}/$STEP/$COMPONENT/$RUN.$VDATE
-export DATA_IN=${DATA_IN:-$DATAROOT}
 mkdir $COMOUT
 
 export HOMEevs=${HOMEevs:-${PACKAGEROOT}/evs_gens.${evs_ver}}
@@ -24,18 +23,13 @@ export PARMevs=$HOMEevs/parm
 export USHevs=$HOMEevs/ush
 export SCRIPTerf=$HOMEevs/scripts
 export FIXevs=${FIXevs:-/lfs/h1/ops/prod/packages/evs.${evs_ver}/fix}
-
-export pid=$$
-jobid=evs_${RUN}_${COMPONENT}_${STEP}.$$
-export DATA=$DATA_IN/$jobid
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 mkdir -p $DATA
 cd $DATA
 
 ####################################
 # Determine Job Output Name on System
 ####################################
-export outid="LL$job"
-export jobid="${outid}.o${pid}"
 export pgmout="OUTPUT.${pid}"
 
 # Run setpdy and initialize PDY variables

@@ -10,9 +10,7 @@ date
 #########################################################
 # obtain unique LSF id (jobid) and make temp directories 
 #########################################################
-export pid=$$
-export DATA_IN=${DATA_IN:-${DATAROOT}}
-export DATA=${DATA_IN}/${jobid:?}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 mkdir -p $DATA
 cd $DATA
 
