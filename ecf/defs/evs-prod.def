@@ -189,10 +189,12 @@ suite evs_prod
     family wafs
       edit MODEL 'wafs'
       family stats
-        task jevs_wafs_atmos_stats.ecf
+        task jevs_wafs_atmos_stats
+          time 09:00
       endfamily
       family plots
-        task jevs_wafs_atmos_plots.ecf
+        task jevs_wafs_atmos_plots
+          trigger ../stats/jevs_wafs_atmos_stats == complete
       endfamily
       family wafs_manager
         task next_run
@@ -352,17 +354,90 @@ suite evs_prod
       edit MODEL 'aqm'
       family prep
         task jevs_aqm_prep
-          time 07:00
+          time 00:00
       endfamily
       family stats
-        task jevs_aqm_stats
+        trigger ./prep/jevs_aqm_prep == complete
+        task jevs_aqm_stats_cyc_00
+          time 00:00
+          edit CYC '00'
+        task jevs_aqm_stats_cyc_01
+          time 01:00
+          edit CYC '01'
+        task jevs_aqm_stats_cyc_02
+          time 02:00
+          edit CYC '02'
+        task jevs_aqm_stats_cyc_03
+          time 03:00
+          edit CYC '03'
+        task jevs_aqm_stats_cyc_04
+          time 04:00
+          edit CYC '04'
+        task jevs_aqm_stats_cyc_05
+          time 05:00
+          edit CYC '05'
+        task jevs_aqm_stats_cyc_06
+          time 06:00
+          edit CYC '06'
+        task jevs_aqm_stats_cyc_07
+          time 07:00
+          edit CYC '07'
+        task jevs_aqm_stats_cyc_08
+          time 08:00
+          edit CYC '08'
+        task jevs_aqm_stats_cyc_09
+          time 09:00
+          edit CYC '09'
+        task jevs_aqm_stats_cyc_10
+          time 10:00
+          edit CYC '10'
+        task jevs_aqm_stats_cyc_11
+          time 11:00
+          edit CYC '11'
+        task jevs_aqm_stats_cyc_12
+          time 12:00
+          edit CYC '12'
+        task jevs_aqm_stats_cyc_13
+          time 13:00
+          edit CYC '13'
+        task jevs_aqm_stats_cyc_14
+          time 14:00
+          edit CYC '14'
+        task jevs_aqm_stats_cyc_15
+          time 15:00
+          edit CYC '15'
+        task jevs_aqm_stats_cyc_16
+          time 16:00
+          edit CYC '16'
+        task jevs_aqm_stats_cyc_17
+          time 17:00
+          edit CYC '17'
+        task jevs_aqm_stats_cyc_18
+          time 18:00
+          edit CYC '18'
+        task jevs_aqm_stats_cyc_19
+          time 19:00
+          edit CYC '19'
+        task jevs_aqm_stats_cyc_20
+          time 20:00
+          edit CYC '20'
+        task jevs_aqm_stats_cyc_21
+          time 21:00
+          edit CYC '21'
+        task jevs_aqm_stats_cyc_22
+          time 22:00
+          edit CYC '22'
+        task jevs_aqm_stats_cyc_23
+          time 23:00
+          edit CYC '23'
       endfamily
       family plots
         task jevs_aqm_plots
+          trigger ../prep/jevs_aqm_prep == complete and ../stats/jevs_aqm_stats_cyc_23 == complete
       endfamily
       family aqm_manager
         task next_run
-          cron 00:00 23:00 01:00
+          trigger ../plots/jevs_aqm_plots == complete
       endfamily
     endfamily  # aqm
     family analyses

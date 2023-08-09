@@ -14,8 +14,6 @@ set -xa
 ###########################################################
 # obtain unique LSF id (jobid) and make temp directories
 ###########################################################
-export pid=$$
-
 export DATA=${DATA:-${DATAROOT:?}/${jobid:?}}
 mkdir -p $DATA
 cd $DATA
@@ -25,11 +23,6 @@ cd $DATA
 export cycle=${cycle:-t${cyc}z}
 setpdy.sh
 . ./PDY
-
-####################################
-# Determine Job Output Name on System
-####################################
-export pgmout="OUTPUT.${pid}"
 
 ##################################################
 # SAVEGES  - Copy Files From TMPDIR to $GESdir
@@ -90,10 +83,6 @@ export KEEPDATA=${KEEPDATA:-YES}
 #######################################################################
 
 $HOMEevs/scripts/${COMPONENT}/${STEP}/exevs_${MODELNAME}${fcst_input_ver}_${STEP}.sh
-
-if [ -e "$pgmout" ]; then
-    cat $pgmout
-fi
 
 msg="JOB $job HAS COMPLETED NORMALLY."
 postmsg "$msg"
