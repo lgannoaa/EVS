@@ -2,7 +2,7 @@
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q dev
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=06:00:00
 #PBS -l select=1:ncpus=1:mem=500GB
 #PBS -l debug=true
@@ -15,7 +15,7 @@
 ############################################################
 set -x
 
-export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/evs_rtofs_module/EVS
+export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 source $HOMEevs/versions/run.ver
 
 module reset

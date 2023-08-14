@@ -1,10 +1,10 @@
-#PBS -N jevs_subseasonal_plots
+#PBS -N jevs_wafs_atmos_plot
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=02:00:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1
+#PBS -l walltime=02:30:00
+#PBS -l select=1:ncpus=40:mem=200GB
 #PBS -l debug=true
 
 model=evs
@@ -15,25 +15,33 @@ model=evs
 # Load modules
 ############################################################
 set -x
-export COMPONENT=subseasonal
+export COMPONENT=wafs
 export STEP=plots
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
-export USE_CFP=YES
+export OMP_NUM_THREADS=1
 export NET=evs
 export RUN=atmos
-export MODELNAME=gefs cfs
 export VERIF_CASE=grid2grid
-export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.${model}.${STEP}
+export pid=${pid:-$$}
+export outid=${outid:-"LL$job"}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+export COMIN=${COMevs}
+export DAYS_LIST="90 31"
+#### Remove before NCO code delivery
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
+# export USH_DIR=$HOMEevs/ush/$COMPONENT
+####
+
 
 ############################################################
 # Execute j-job
 ############################################################
-$HOMEevs/jobs/subseasonal/plots/JEVS_SUBSEASONAL_PLOTS
+${HOMEevs}/jobs/${COMPONENT}/${STEP}/JEVS_WAFS_ATMOS_PLOTS
 if [ $? -ne 0 ]; then
    ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
    ecflow_client --abort

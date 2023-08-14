@@ -2,7 +2,7 @@
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q dev
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=03:00:00
 #PBS -l select=1:ncpus=1:mem=500GB
 #PBS -l debug=true
@@ -15,7 +15,7 @@
 ############################################################
 set -x
 
-export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/evs_rtofs_module/EVS
+export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 source $HOMEevs/versions/run.ver
 
 module reset
@@ -32,7 +32,7 @@ export VDATE=$(date --date="3 days ago" +%Y%m%d)
 
 export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/${evs_ver}
 export COMINstats=$COMIN/stats/$COMPONENT
-export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/${evs_ver}
+export COMOUT=/lfs/h2/emc/ptmp/$USER/$NET/${evs_ver}
 export COMOUTplots=$COMOUT/$STEP/$COMPONENT/$COMPONENT.$VDATE
 export DATAROOT=/lfs/h2/emc/stmp/${USER}/evs_test/$envir/tmp
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix/logos

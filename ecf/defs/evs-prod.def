@@ -142,17 +142,20 @@ suite evs_prod
     family subseasonal
       edit MODEL 'subseasonal'
       family prep
-        task jevs_subseasonal_prep
-          time 07:00
+        time 14:00
+        task jevs_subseasonal_obs_prep
+        task jevs_subseasonal_gefs_prep
+        task jevs_subseasonal_cfs_prep
       endfamily
       family stats
+        trigger ./prep == complete
         task jevs_gefs_subseasonal_grid2obs_stats
         task jevs_gefs_subseasonal_grid2grid_stats
         task jevs_cfs_subseasonal_grid2obs_stats
         task jevs_cfs_subseasonal_grid2grid_stats
       endfamily
       family plots
-        task jevs_subseasonal_plots
+        trigger ./stats == complete
         task jevs_subseasonal_grid2obs_PrepBufr_plots_90days
         task jevs_subseasonal_grid2obs_PrepBufr_plots_31days
         task jevs_subseasonal_grid2grid_sst_plots_90days
@@ -164,26 +167,20 @@ suite evs_prod
         task jevs_subseasonal_grid2grid_anom_plots_90days
         task jevs_subseasonal_grid2grid_anom_plots_31days
       endfamily
-      family subseasonal_manager
-        task next_run
-          cron 00:00 23:00 01:00
-      endfamily
     endfamily  # subseasonal
     family nfcens
       edit MODEL 'nfcens'
       family prep
         task jevs_nfcens_wave_grid2obs_prep
-          time 07:00
+          time 12:00
       endfamily   
       family stats
+        trigger ./prep == complete
         task jevs_nfcens_wave_grid2obs_stats
       endfamily
       family plots
+        trigger ./stats == complete
         task jevs_nfcens_wave_grid2obs_plots
-      endfamily
-      family nfcens_manager
-        task next_run
-          cron 00:00 23:00 01:00
       endfamily
     endfamily  # nfcens
     family wafs

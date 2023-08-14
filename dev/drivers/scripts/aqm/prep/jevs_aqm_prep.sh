@@ -2,7 +2,7 @@
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q "dev"
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=02:30:00
 #PBS -l select=1:ncpus=1:mem=2GB
 #PBS -l debug=true
@@ -60,7 +60,6 @@ export cycle=t${cyc}z
 ## output can be found at $COMOUT
 ##
 export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/${NET}/${evs_ver}
-export COMIN=/lfs/h2/emc/physics/noscrub/$USER/${NET}/${evs_ver}
 ##
 ## For aqmv7 NRT runs
 ## export fcst_input_ver=v7

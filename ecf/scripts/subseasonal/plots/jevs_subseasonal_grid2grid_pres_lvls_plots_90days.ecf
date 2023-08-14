@@ -3,8 +3,8 @@
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:10:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1:mem=10GB
+#PBS -l walltime=01:10:00
+#PBS -l place=vscatter,select=1:ncpus=48:ompthreads=1:mem=10GB
 #PBS -l debug=true
 
 model=evs
@@ -17,12 +17,13 @@ model=evs
 set -x
 export COMPONENT=subseasonal
 export STEP=plots
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
+export nproc=48
 export USE_CFP=YES
 export NET=evs
 export RUN=atmos
@@ -30,13 +31,13 @@ export MODELNAME="gefs cfs"
 export VERIF_CASE=grid2grid
 export VERIF_TYPE=pres_lvls
 export NDAYS=90
+export pid=${pid:-$$}
+export outid=${outid:-"LL$job"}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 export COMIN=${COMevs}
 export COMINcfs=$COMIN/stats/$COMPONENT/cfs
 export COMINgefs=$COMIN/stats/$COMPONENT/gefs
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
-export VDATE_START=$(date -d "today -91 day" +"%Y%m%d")
-export VDATE_END=$(date -d "today -2 day" +"%Y%m%d")
-export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN.$VDATE_END
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.${model}.${COMPONENT}.${VERIF_CASE}.${STEP}.${VERIF_TYPE}
 
 ############################################################

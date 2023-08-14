@@ -3,8 +3,8 @@
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:40:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1:mem=60GB
+#PBS -l walltime=01:40:00
+#PBS -l place=vscatter,select=1:ncpus=8:ompthreads=1:mem=60GB
 #PBS -l debug=true
 
 model=evs
@@ -17,12 +17,13 @@ model=evs
 set -x
 export COMPONENT=subseasonal
 export STEP=stats
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
+export nproc=8
 export USE_CFP=YES
 export NET=evs
 export RUN=atmos
@@ -31,7 +32,7 @@ export VERIF_CASE=grid2obs
 export COMIN=${COMevs}/prep/$COMPONENT/$RUN
 export COMINobs=${COMevs}/prep/$COMPONENT/$RUN
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
-export COMINclimo=$FIXevs/climos/atmos
+# export COMINclimo=$FIXevs/climos/atmos
 export COMOUT=${COMevs}/$STEP/$COMPONENT
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}

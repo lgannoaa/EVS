@@ -3,7 +3,7 @@
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q "dev"
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=4:59:00
 #PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1:mem=128GB
 #PBS -l debug=true
@@ -39,7 +39,7 @@ set -x
   export envir="prod"
   export evs_run_mode="standalone"
 
-  export ACCOUNT=VERF-DEV
+  export ACCOUNT=EVS-DEV
   export QUEUESERV="dev_transfer"
   export QUEUE="dev"
   export QUEUESHARED="dev_shared"
@@ -47,8 +47,8 @@ set -x
         
 
 # EVS Settings
-  export HOMEevs="/lfs/h2/emc/vpppg/noscrub/${USER}/verification/EVS"
-# export HOMEevs=/lfs/h2/emc/vpppg/noscrub/${USER}/EVS
+#  export HOMEevs="/lfs/h2/emc/vpppg/noscrub/${USER}/verification/EVS"
+ export HOMEevs=/lfs/h2/emc/vpppg/noscrub/${USER}/EVS
 
 # Subdirectories to EVS Home Directory
   export PARMevs=$HOMEevs/parm
@@ -73,11 +73,13 @@ export MET_CONFIG="${MET_PLUS_PATH}/parm/met_config"
 export PYTHONPATH=$HOMEevs/ush/$COMPONENT:$PYTHONPATH
 
 # In production the following will be deleted (DATAROOT will be used instead, which already exists in the environment)
+  export DATAROOT=/lfs/h2/emc/stmp/$USER/evs_test/$envir/tmp
   export DATAROOTtmp=/lfs/h2/emc/stmp/$USER/evs_test/$envir/tmp
   export DATA=/lfs/h2/emc/stmp/$USER/evs_test/$envir/tmp
 
 # in production the following will be set to yesterday's date
   export VDATE=$(date -d "today -1 day" +"%Y%m%d")
+  export cyc=$(date +"%H")
 
 # Developer Settings
   export COMINspcotlk=/lfs/h2/emc/vpppg/noscrub/logan.dawson/evs/v1.0/prep/cam

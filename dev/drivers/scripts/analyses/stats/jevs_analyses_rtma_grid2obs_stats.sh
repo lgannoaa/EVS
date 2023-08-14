@@ -3,7 +3,7 @@
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q "dev"
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=00:30:00
 #PBS -l select=1:ncpus=1:mem=2GB
 #PBS -l debug=true
@@ -40,7 +40,7 @@ export COMPONENT=analyses
 export RUN=atmos
 export VERIF_CASE=grid2obs
 
-source $HOMEevs/modulefiles/$COMPONENT/${COMPONENT}_${STEP).sh
+source $HOMEevs/modulefiles/$COMPONENT/${COMPONENT}_${STEP}.sh
 
 export job=${PBS_JOBNAME:-jevs_${MODELNAME}_${VERIF_CASE}_${STEP}}
 export jobid=$job.${PBS_JOBID:-$$}

@@ -2,7 +2,7 @@
 #PBS -j oe 
 #PBS -S /bin/bash
 #PBS -q "dev"
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=01:30:00
 #PBS -l select=1:ncpus=1:mem=120GB
 #PBS -l debug=true
@@ -29,7 +29,7 @@ export SITE=$(cat /etc/cluster_name)
 export maillist='geoffrey.manikin@noaa.gov,shannon.shields@noaa.gov'
 
 export USER=$USER
-export ACCOUNT=VERF-DEV
+export ACCOUNT=EVS-DEV
 export QUEUE=dev
 export QUEUESHARED=dev_shared
 export QUEUESERV=dev_transfer

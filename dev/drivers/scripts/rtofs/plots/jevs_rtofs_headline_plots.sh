@@ -2,7 +2,7 @@
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q dev
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=01:00:00
 #PBS -l select=1:ncpus=1:mem=500GB
 #PBS -l debug=true
@@ -29,12 +29,13 @@ export RUN=headline
 source $HOMEevs/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 
 # set up VDATE and COMIN and COMOUT
-export VDATE=$(date --date="4 days ago" +%Y%m%d)
+export VDATE=$(date --date="3 days ago" +%Y%m%d)
 
 export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/${evs_ver}
 export COMINstats=$COMIN/stats/$COMPONENT
 export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/${evs_ver}
-export COMOUTplots=$COMOUT/$STEP/$COMPONENT/$COMPONENT.$VDATE
+#export COMOUTplots=$COMOUT/$STEP/$COMPONENT/$COMPONENT.$VDATE
+export COMOUTplots=/lfs/h2/emc/ptmp/$USER/$NET/$evs_ver/$STEP/$COMPONENT/$COMPONENT.$VDATE
 export DATA=/lfs/h2/emc/ptmp/$USER/$NET/${evs_ver}
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix/logos
 export USHevs=$HOMEevs/ush/$COMPONENT

@@ -2,7 +2,7 @@
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q dev
-#PBS -A VERF-DEV
+#PBS -A EVS-DEV
 #PBS -l walltime=00:10:00
 #PBS -l select=1:ncpus=1:mem=35GB
 #PBS -l debug=true
@@ -43,7 +43,8 @@ export TMPDIR=$DATAROOT
 export COMROOT=/lfs/h2/emc/vpppg/noscrub/$USER
 export COMIN=$COMROOT/$NET/$evs_ver
 export VDATE_END=$(date -d "24 hours ago" '+%Y%m%d')
-export COMOUT=$COMROOT/$NET/$evs_ver/$STEP/$COMPONENT/$RUN.$VDATE_END
+#export COMOUT=$COMROOT/$NET/$evs_ver/$STEP/$COMPONENT/$RUN.$VDATE_END
+export COMOUT=/lfs/h2/emc/ptmp/$USER/$NET/$evs_ver/$STEP/$COMPONENT/$RUN.$VDATE_END
 
 # CALL executable job script here
 $HOMEevs/jobs/global_det/plots/JEVS_GLOBAL_DET_PLOTS
