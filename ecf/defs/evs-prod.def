@@ -171,16 +171,16 @@ suite evs_prod
     family nfcens
       edit MODEL 'nfcens'
       family prep
-        task jevs_nfcens_wave_grid2obs_prep
+        task jevs_nfcens_wave_prep
           time 12:00
       endfamily   
       family stats
         trigger ./prep == complete
-        task jevs_nfcens_wave_grid2obs_stats
+        task jevs_nfcens_wave_stats
       endfamily
       family plots
         trigger ./stats == complete
-        task jevs_nfcens_wave_grid2obs_plots
+        task jevs_nfcens_wave_plots
       endfamily
     endfamily  # nfcens
     family wafs
