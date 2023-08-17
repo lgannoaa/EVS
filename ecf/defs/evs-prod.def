@@ -201,29 +201,39 @@ suite evs_prod
     family mesoscale
       edit MODEL 'mesoscale'
       family stats
-        task jevs_sref_precip_stats
-        task jevs_sref_grid2obs_stats
-        task jevs_sref_cnv_stats
-        task jevs_rap_snowfall_stats
-        task jevs_rap_precip_stats
-        task jevs_rap_grid2obs_stats
-        task jevs_nam_snowfall_stats
-        task jevs_nam_precip_stats
-        task jevs_nam_grid2obs_stats
+        task jevs_mesoscale_nam_precip_stats
+          cron 00:00 23:00 01:00
+        task jevs_mesoscale_rap_precip_stats
+          cron 00:00 23:00 01:00
+        task jevs_mesoscale_nam_grid2obs_stats
+          time 07:00
+        task jevs_mesoscale_rap_grid2obs_stats
+          time 07:00
+        task jevs_mesoscale_nam_snowfall_stats
+          cron 00:00 23:00 06:00
+        task jevs_mesoscale_rap_snowfall_stats
+          cron 00:00 23:00 06:00
+        task jevs_mesoscale_sref_cnv_stats
+          time 08:30
+        task jevs_mesoscale_sref_precip_stats
+          time 09:30
+        task jevs_mesoscale_sref_grid2obs_stats
+          time 09:30
       endfamily
       family plots
-        task jevs_sref_precip_spatial_plots
-        task jevs_sref_precip_past90days_plots
-        task jevs_sref_grid2obs_plots
-        task jevs_sref_grid2obs_past90days_plots
-        task jevs_sref_grid2grid_plots
-        task jevs_sref_cnv_past90days_plots
+        trigger ./stats == complete
+        task jevs_mesoscale_sref_grid2obs_past90days_plots
+          time 12:30
+        task jevs_mesoscale_sref_precip_past90days_plots
+          time 12:30
+        task jevs_mesoscale_sref_cnv_past90days_plots
+          time 12:30
+        task jevs_mesoscale_sref_precip_spatial_plots
+          time 12:30
         task jevs_mesoscale_precip_plots
-        task jevs_mesoscale_grid2obs_plots
-      endfamily
-      family mesoscale_manager
-        task next_run
-          cron 00:00 23:00 01:00
+          time 00:00
+        task jevs_mesoscale_snowfall_plots
+          time 00:00
       endfamily
     endfamily  # mesoscale
     family global_det

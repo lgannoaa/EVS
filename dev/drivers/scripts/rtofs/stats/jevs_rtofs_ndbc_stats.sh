@@ -4,7 +4,7 @@
 #PBS -q dev
 #PBS -A EVS-DEV
 #PBS -l walltime=06:00:00
-#PBS -l select=1:ncpus=1:mem=500GB
+#PBS -l select=1:ncpus=1:mem=600GB
 #PBS -l debug=true
 
 #%include <head.h>
@@ -19,6 +19,7 @@ export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 source $HOMEevs/versions/run.ver
 
 module reset
+module load prod_envir/${prod_envir_ver}
 
 # specify environment variables
 export NET=evs

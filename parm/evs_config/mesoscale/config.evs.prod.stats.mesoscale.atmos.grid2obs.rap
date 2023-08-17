@@ -11,6 +11,10 @@
 
 echo "BEGIN: $(basename ${BASH_SOURCE[0]})"
 
+# EMail Settings
+#### export maillist="roshan.shrestha@noaa.gov,geoffrey.manikin@noaa.gov"
+export maillist="lin.gan@noaa.gov"
+
 # METplus Settings
 export MET_PLUS_OUT=${DATA}/${VERIF_CASE}/METplus_output
 export MET_CONFIG_OVERRIDES=""

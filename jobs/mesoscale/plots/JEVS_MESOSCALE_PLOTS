@@ -20,22 +20,16 @@ date
 ####################################
 # obtain unique LSF id (jobid) and make temp directories
 ####################################
-export pid=$$
-export DATA=${DATA:-${DATAROOT:?}}/${jobid:?}
-rm -rf $DATA
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 mkdir -p $DATA
 cd $DATA
 
 
 ####################################
-# Determine Job Output Name on System
-####################################
-export pgmout="OUTPUT.${pid}"
-
-
-####################################
 # Set EVS directories
 ####################################
+export machine=${machine:-WCOSS2}
+export MET_bin_exec=${MET_bin_exec:-bin}
 export HOMEevs=${HOMEevs:-${PACKAGEROOT}/evs.${model_ver}}
 export EXECevs=${EXECevs:-$HOMEevs/exec}
 export FIXevs=${FIXevs:-$HOMEevs/fix}
@@ -43,10 +37,10 @@ export PARMevs=${PARMevs:-$HOMEevs/parm}
 export USHevs=${USHevs:-$HOMEevs/ush}
 export SCRIPTevs=$HOMEevs/scripts
 
-
 ####################################
 # Run setpdy and initialize PDY variables
 ####################################
+export cyc=${cyc:-00}
 export cycle=t${cyc}z
 setpdy.sh 31
 . ./PDY
@@ -116,12 +110,7 @@ fi
 
 export err=$?; err_chk
 
-if [ -e "$pgmout" ]; then
-   cat $pgmout
-fi
-
 msg="JOB $job HAS COMPLETED NORMALLY."
-postmsg "$jlogfile" "$msg"
 
 if [ "$KEEPDATA" != "YES" ] ; then
   cd $DATAROOT

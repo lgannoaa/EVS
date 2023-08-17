@@ -4,7 +4,7 @@
 #PBS -q "dev"
 #PBS -A EVS-DEV
 #PBS -l walltime=02:00:00
-#PBS -l select=1:ncpus=1:mem=2GB
+#PBS -l select=1:ncpus=1:mem=10GB
 #PBS -l debug=true
 
 set -x
@@ -21,9 +21,10 @@ export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 ############################################################
 # Load modules
 ############################################################
-module reset
 
 source $HOMEevs/versions/run.ver
+module reset
+module load prod_envir/${prod_envir_ver}
 
 source $HOMEevs/modulefiles/aqm/aqm_plots.sh
 
