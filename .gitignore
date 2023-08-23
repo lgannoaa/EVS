@@ -18,3 +18,9 @@ nohup.out
 exec/
 .idea/
 .vscode/
+
+# Ignore check
+#-------------------
+tt.sh
+tt.log
+exec
