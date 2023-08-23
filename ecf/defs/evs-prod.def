@@ -202,38 +202,39 @@ suite evs_prod
       edit MODEL 'mesoscale'
       family stats
         task jevs_mesoscale_nam_precip_stats
-          cron 00:00 23:00 01:00
+          cron 00:10 23:10 01:00
         task jevs_mesoscale_rap_precip_stats
-          cron 00:00 23:00 01:00
+          cron 00:10 23:10 01:00
         task jevs_mesoscale_nam_grid2obs_stats
-          time 07:00
+          cron 07:00
         task jevs_mesoscale_rap_grid2obs_stats
-          time 07:00
+          cron 07:00
         task jevs_mesoscale_nam_snowfall_stats
-          cron 00:00 23:00 06:00
+          cron 00:10 23:10 06:00
         task jevs_mesoscale_rap_snowfall_stats
-          cron 00:00 23:00 06:00
+          cron 00:10 23:10 06:00
         task jevs_mesoscale_sref_cnv_stats
-          time 08:30
+          cron 08:30
         task jevs_mesoscale_sref_precip_stats
-          time 09:30
+          cron 09:30
         task jevs_mesoscale_sref_grid2obs_stats
-          time 09:30
+          cron 09:30
       endfamily
       family plots
-        trigger ./stats == complete
         task jevs_mesoscale_sref_grid2obs_past90days_plots
-          time 12:30
+          cron 00:00
         task jevs_mesoscale_sref_precip_past90days_plots
-          time 12:30
+          cron 00:00
         task jevs_mesoscale_sref_cnv_past90days_plots
-          time 12:30
+          cron 00:00
         task jevs_mesoscale_sref_precip_spatial_plots
-          time 12:30
+          cron 12:30
         task jevs_mesoscale_precip_plots
-          time 00:00
+          cron 12:30
         task jevs_mesoscale_snowfall_plots
-          time 00:00
+          cron 12:30
+        task jevs_mesoscale_headline_plots
+          cron 12:30
       endfamily
     endfamily  # mesoscale
     family global_det
@@ -361,105 +362,311 @@ suite evs_prod
       edit MODEL 'aqm'
       family prep
         task jevs_aqm_prep
-          time 00:00
+          cron 00:00
       endfamily
       family stats
-        trigger ./prep/jevs_aqm_prep == complete
         task jevs_aqm_stats_cyc_00
-          time 00:00
+          cron 00:10
           edit CYC '00'
         task jevs_aqm_stats_cyc_01
-          time 01:00
+          cron 01:10
           edit CYC '01'
         task jevs_aqm_stats_cyc_02
-          time 02:00
+          cron 02:10
           edit CYC '02'
         task jevs_aqm_stats_cyc_03
-          time 03:00
+          cron 03:10
           edit CYC '03'
         task jevs_aqm_stats_cyc_04
-          time 04:00
+          cron 04:10
           edit CYC '04'
         task jevs_aqm_stats_cyc_05
-          time 05:00
+          cron 05:10
           edit CYC '05'
         task jevs_aqm_stats_cyc_06
-          time 06:00
+          cron 06:10
           edit CYC '06'
         task jevs_aqm_stats_cyc_07
-          time 07:00
+          cron 07:10
           edit CYC '07'
         task jevs_aqm_stats_cyc_08
-          time 08:00
+          cron 08:10
           edit CYC '08'
         task jevs_aqm_stats_cyc_09
-          time 09:00
+          cron 09:10
           edit CYC '09'
         task jevs_aqm_stats_cyc_10
-          time 10:00
+          cron 10:10
           edit CYC '10'
         task jevs_aqm_stats_cyc_11
-          time 11:00
+          cron 11:10
           edit CYC '11'
         task jevs_aqm_stats_cyc_12
-          time 12:00
+          cron 12:10
           edit CYC '12'
         task jevs_aqm_stats_cyc_13
-          time 13:00
+          cron 13:10
           edit CYC '13'
         task jevs_aqm_stats_cyc_14
-          time 14:00
+          cron 14:10
           edit CYC '14'
         task jevs_aqm_stats_cyc_15
-          time 15:00
+          cron 15:10
           edit CYC '15'
         task jevs_aqm_stats_cyc_16
-          time 16:00
+          cron 16:10
           edit CYC '16'
         task jevs_aqm_stats_cyc_17
-          time 17:00
+          cron 17:10
           edit CYC '17'
         task jevs_aqm_stats_cyc_18
-          time 18:00
+          cron 18:10
           edit CYC '18'
         task jevs_aqm_stats_cyc_19
-          time 19:00
+          cron 19:10
           edit CYC '19'
         task jevs_aqm_stats_cyc_20
-          time 20:00
+          cron 20:10
           edit CYC '20'
         task jevs_aqm_stats_cyc_21
-          time 21:00
+          cron 21:10
           edit CYC '21'
         task jevs_aqm_stats_cyc_22
-          time 22:00
+          cron 22:10
           edit CYC '22'
         task jevs_aqm_stats_cyc_23
-          time 23:00
+          cron 23:10
           edit CYC '23'
       endfamily
       family plots
         task jevs_aqm_plots
-          trigger ../prep/jevs_aqm_prep == complete and ../stats/jevs_aqm_stats_cyc_23 == complete
-      endfamily
-      family aqm_manager
-        task next_run
-          trigger ../plots/jevs_aqm_plots == complete
+          cron 00:30
       endfamily
     endfamily  # aqm
     family analyses
       edit MODEL 'analyses'
       family stats
-        task jevs_urma_stats
-        task jevs_rtma_stats
-        task jevs_rtma_ru_stats
+        task jevs_analyses_urma_grid2obs_stats_cyc_00
+          cron 00:00
+          edit CYC '00'
+        task jevs_analyses_urma_grid2obs_stats_cyc_01
+          cron 01:00
+          edit CYC '01'
+        task jevs_analyses_urma_grid2obs_stats_cyc_02
+          cron 02:00
+          edit CYC '02'
+        task jevs_analyses_urma_grid2obs_stats_cyc_03
+          cron 03:00
+          edit CYC '03'
+        task jevs_analyses_urma_grid2obs_stats_cyc_04
+          cron 04:00
+          edit CYC '04'
+        task jevs_analyses_urma_grid2obs_stats_cyc_05
+          cron 05:00
+          edit CYC '05'
+        task jevs_analyses_urma_grid2obs_stats_cyc_06
+          cron 06:00
+          edit CYC '06'
+        task jevs_analyses_urma_grid2obs_stats_cyc_07
+          cron 07:00
+          edit CYC '07'
+        task jevs_analyses_urma_grid2obs_stats_cyc_08
+          cron 08:00
+          edit CYC '08'
+        task jevs_analyses_urma_grid2obs_stats_cyc_09
+          cron 09:00
+          edit CYC '09'
+        task jevs_analyses_urma_grid2obs_stats_cyc_10
+          cron 10:00
+          edit CYC '10'
+        task jevs_analyses_urma_grid2obs_stats_cyc_11
+          cron 11:00
+          edit CYC '11'
+        task jevs_analyses_urma_grid2obs_stats_cyc_12
+          cron 12:00
+          edit CYC '12'
+        task jevs_analyses_urma_grid2obs_stats_cyc_13
+          cron 13:00
+          edit CYC '13'
+        task jevs_analyses_urma_grid2obs_stats_cyc_14
+          cron 14:00
+          edit CYC '14'
+        task jevs_analyses_urma_grid2obs_stats_cyc_15
+          cron 15:00
+          edit CYC '15'
+        task jevs_analyses_urma_grid2obs_stats_cyc_16
+          cron 16:00
+          edit CYC '16'
+        task jevs_analyses_urma_grid2obs_stats_cyc_17
+          cron 17:00
+          edit CYC '17'
+        task jevs_analyses_urma_grid2obs_stats_cyc_18
+          cron 18:00
+          edit CYC '18'
+        task jevs_analyses_urma_grid2obs_stats_cyc_19
+          cron 19:00
+          edit CYC '19'
+        task jevs_analyses_urma_grid2obs_stats_cyc_20
+          cron 20:00
+          edit CYC '20'
+        task jevs_analyses_urma_grid2obs_stats_cyc_21
+          cron 21:00
+          edit CYC '21'
+        task jevs_analyses_urma_grid2obs_stats_cyc_22
+          cron 22:00
+          edit CYC '22'
+        task jevs_analyses_urma_grid2obs_stats_cyc_23
+          cron 23:00
+          edit CYC '23'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_00
+          cron 00:00
+          edit CYC '00'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_01
+          cron 01:00
+          edit CYC '01'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_02
+          cron 02:00
+          edit CYC '02'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_03
+          cron 03:00
+          edit CYC '03'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_04
+          cron 04:00
+          edit CYC '04'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_05
+          cron 05:00
+          edit CYC '05'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_06
+          cron 06:00
+          edit CYC '06'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_07
+          cron 07:00
+          edit CYC '07'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_08
+          cron 08:00
+          edit CYC '08'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_09
+          cron 09:00
+          edit CYC '09'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_10
+          cron 10:00
+          edit CYC '10'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_11
+          cron 11:00
+          edit CYC '11'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_12
+          cron 12:00
+          edit CYC '12'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_13
+          cron 13:00
+          edit CYC '13'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_14
+          cron 14:00
+          edit CYC '14'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_15
+          cron 15:00
+          edit CYC '15'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_16
+          cron 16:00
+          edit CYC '16'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_17
+          cron 17:00
+          edit CYC '17'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_18
+          cron 18:00
+          edit CYC '18'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_19
+          cron 19:00
+          edit CYC '19'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_20
+          cron 20:00
+          edit CYC '20'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_21
+          cron 21:00
+          edit CYC '21'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_22
+          cron 22:00
+          edit CYC '22'
+        task jevs_analyses_rtma_grid2obs_stats_cyc_23
+          cron 23:00
+          edit CYC '23'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_00
+          cron 00:00
+          edit CYC '00'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_01
+          cron 01:00
+          edit CYC '01'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_02
+          cron 02:00
+          edit CYC '02'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_03
+          cron 03:00
+          edit CYC '03'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_04
+          cron 04:00
+          edit CYC '04'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_05
+          cron 05:00
+          edit CYC '05'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_06
+          cron 06:00
+          edit CYC '06'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_07
+          cron 07:00
+          edit CYC '07'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_08
+          cron 08:00
+          edit CYC '08'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_09
+          cron 09:00
+          edit CYC '09'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_10
+          cron 10:00
+          edit CYC '10'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_11
+          cron 11:00
+          edit CYC '11'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_12
+          cron 12:00
+          edit CYC '12'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_13
+          cron 13:00
+          edit CYC '13'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_14
+          cron 14:00
+          edit CYC '14'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_15
+          cron 15:00
+          edit CYC '15'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_16
+          cron 16:00
+          edit CYC '16'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_17
+          cron 17:00
+          edit CYC '17'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_18
+          cron 18:00
+          edit CYC '18'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_19
+          cron 19:00
+          edit CYC '19'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_20
+          cron 20:00
+          edit CYC '20'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_21
+          cron 21:00
+          edit CYC '21'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_22
+          cron 22:00
+          edit CYC '22'
+        task jevs_analyses_rtma_ru_grid2obs_stats_cyc_23
+          cron 23:00
+          edit CYC '23'
       endfamily
       family plots
+        cron 00:30
         task jevs_analyses_plots
-      endfamily
-      family analyses_manager
-        task next_run
-          cron 00:00 23:00 01:00
+        task jevs_analyses_grid2obs_plots
       endfamily
     endfamily  # analyses
   endfamily    # primary

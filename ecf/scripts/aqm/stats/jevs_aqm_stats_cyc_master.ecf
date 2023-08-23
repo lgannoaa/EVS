@@ -3,7 +3,7 @@
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:15:00
+#PBS -l walltime=03:15:00
 #PBS -l select=1:ncpus=1:mem=2GB
 #PBS -l debug=true
 
@@ -24,14 +24,14 @@ module list
 # Specify environment variables
 ############################################################
 export cyc=%CYC%
+export cycle=t${cyc}z
 export NET=evs
 export RUN=atmos
 export VERIF_CASE=grid2obs
 export MODELNAME=aqm
 export modsys=aqm
-export MET_bin_exec=bin
+#export MET_bin_exec=bin
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
-export cycle=t${cyc}z
 export COMIN=${COMevs}
 export COMOUT=$COMIN/${STEP}/${COMPONENT}
 # export COMOUTsmall=${COMOUT}/${RUN}.${VDATE}/${MODELNAME}/${VERIF_CASE}

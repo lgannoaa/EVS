@@ -24,4 +24,14 @@ echo "Linking AQM stats ..."
 cyc=$(seq 0 23)
 link_master_to_cyc "jevs_aqm_stats_cyc" "$cyc"
 
+# ANALYSES files
+cd $ECF_DIR/scripts/analyses/stats
+echo "Linking ANALYSES stats ..."
+cyc=$(seq 0 23)
+link_master_to_cyc "jevs_analyses_urma_grid2obs_stats_cyc" "$cyc"
+cyc=$(seq 0 23)
+link_master_to_cyc "jevs_analyses_rtma_ru_grid2obs_stats_cyc" "$cyc"
+cyc=$(seq 0 23)
+link_master_to_cyc "jevs_analyses_rtma_grid2obs_stats_cyc" "$cyc"
+
 echo "Done."
