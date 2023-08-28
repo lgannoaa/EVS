@@ -23,25 +23,23 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+if [ -n "%cyc:%" ]; then
+  export cyc=${cyc:-%cyc:%}
+else
+  export cyc=$($NDATE | cut -c 9-10)
+fi
 export NET=evs
 export RUN=atmos
 export VERIF_CASE=grid2obs
 export MODELNAME=aqm
 export modsys=aqm
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
-# export MET_bin_exec=bin
 export COMIN=${COMevs}
 export COMOUT=${COMevs}/${STEP}/${COMPONENT}
 export COMINaqm=${COMIN}/stats/${COMPONENT}/${MODELNAME}
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
-#mkdir -p $DATA
-#cd $DATA
-#setpdy.sh
-#. ./PDY 
-#export VDATE=${PDYm3}
-#export COMOUTplots=${COMOUT}/plots/${COMPONENT}/${RUN}.${VDATE}
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.${COMPONENT}.prod
 source $config
 

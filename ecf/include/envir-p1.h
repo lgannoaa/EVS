@@ -22,6 +22,7 @@ export DBNROOT=$SIPHONROOT
 if [[ ! " prod para test " =~ " ${envir} " && " ops.prod ops.para " =~ " $(whoami) " ]]; then err_exit "ENVIR must be prod, para, or test [envir-p1.h]"; fi
 
 # Developer configuration
+export maillist="lin.gan@noaa.gov"
 PTMP=/lfs/h2/emc/ptmp
 model=evs
 PSLOT=ecflow_evs

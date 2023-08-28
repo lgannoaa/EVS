@@ -16,17 +16,9 @@ date
 ###########################################################
 # obtain unique LSF id (jobid) and make temp directories
 ###########################################################
-export pid=$$
 export DATA=${DATA:-${DATAROOT:?}/${jobid:?}}
-rm -rf $DATA
 mkdir -p $DATA
 cd $DATA
-
-
-####################################
-# Determine Job Output Name on System
-####################################
-export pgmout="OUTPUT.${pid}"
 
 
 ####################################
@@ -44,6 +36,7 @@ export MET_PLUS_CONF="${PARMevs}/metplus_config/${COMPONENT}/${VERIF_CASE}/${STE
 ####################################
 # Run setpdy and initialize PDY variables
 ####################################
+export cyc=${cyc:-"00"}
 export cycle=${cycle:-t${cyc}z}
 setpdy.sh 8
 . ./PDY
@@ -88,7 +81,12 @@ export NET=${NET:-evs}
 export STEP=${STEP:-prep}
 export COMPONENT=${COMPONENT:-cam}
 export RUN=${RUN:-atmos}
-
+export machine=${machine:-WCOSS2}
+export MET_bin_exec=${MET_bin_exec:-bin}
+export MET_PLUS_PATH=${MET_PLUS_PATH:-$METPLUS_PATH}
+export MET_PATH=$MET_ROOT
+export MET_CONFIG="${MET_PLUS_PATH}/parm/met_config"
+export PYTHONPATH=$HOMEevs/ush/$COMPONENT:$PYTHONPATH
 
 ####################################
 # Define COMIN/COMOUT variables
@@ -120,10 +118,6 @@ fi
 ####################################
 $HOMEevs/scripts/$COMPONENT/$STEP/exevs_${MODELNAME}_${VERIF_CASE}_${STEP}.sh
 export err=$?; err_chk
-
-if [ -e "$pgmout" ]; then
-   cat $pgmout
-fi
 
 msg="JOB $job HAS COMPLETED NORMALLY."
 postmsg "$msg"

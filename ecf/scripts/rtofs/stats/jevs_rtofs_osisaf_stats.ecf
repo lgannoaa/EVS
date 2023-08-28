@@ -23,6 +23,11 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+if [ -n "%cyc:%" ]; then
+  export cyc=${cyc:-%cyc:%}
+else
+  export cyc=$($NDATE | cut -c 9-10)
+fi
 export NET=evs
 export RUN=osisaf
 export RUNupper=OSISAF

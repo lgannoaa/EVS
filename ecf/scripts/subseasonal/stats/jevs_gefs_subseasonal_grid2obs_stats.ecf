@@ -23,6 +23,11 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+if [ -n "%cyc:%" ]; then
+  export cyc=${cyc:-%cyc:%}
+else
+  export cyc=$($NDATE | cut -c 9-10)
+fi
 export nproc=8
 export USE_CFP=YES
 export NET=evs

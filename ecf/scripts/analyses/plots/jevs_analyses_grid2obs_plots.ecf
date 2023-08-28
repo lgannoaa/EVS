@@ -23,6 +23,11 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
+if [ -n "%cyc:%" ]; then
+  export cyc=${cyc:-%cyc:%}
+else
+  export cyc=$($NDATE | cut -c 9-10)
+fi
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export NET=evs
 export RUN=atmos
@@ -35,7 +40,7 @@ export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 export COMIN=${COMevs}
 export COMOUT=${COMevs}
 export COMINanl=${COMIN}/stats/${COMPONENT}
-export COMOUTplots=${COMOUT}/plots/${COMPONENT}/${RUN}.${VDATE}
+#export COMOUTplots=${COMOUT}/plots/${COMPONENT}/${RUN}.${VDATE}
 export config=$HOMEevs/parm/evs_config/analyses/config.evs.rtma.prod
 source $config
 
