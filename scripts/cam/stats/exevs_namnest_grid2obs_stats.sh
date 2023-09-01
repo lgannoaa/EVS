@@ -15,7 +15,8 @@ set -x
 # Set Basic Environment Variables
 last_cyc="21"
 NEST_LIST="conus ak spc_otlk firewx hi pr subreg"
-VERIF_TYPES="raob metar mping"
+#### VERIF_TYPES="raob metar mping"
+VERIF_TYPES="raob metar"
 
 # Reformat MET Data
 export job_type="reformat"
@@ -99,12 +100,10 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
-    set +x
     while [ $nc -le $ncount_job ]; do
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
-    set -x
 fi
 
 # Generate MET Data
@@ -184,12 +183,10 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
-    set +x
     while [ $nc -le $ncount_job ]; do
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
-    set -x
 fi
 
 export job_type="gather"
@@ -255,12 +252,10 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
-    set +x
     while [ $nc -le $ncount_job ]; do
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
-    set -x
 fi
 
 export job_type="gather2"
@@ -325,12 +320,10 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
-    set +x
     while [ $nc -le $ncount_job ]; do
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
-    set -x
 fi
 
 # Copy files to desired location
@@ -402,12 +395,10 @@ if [ "$cyc" -ge "$last_cyc" ]; then
             nc=$((nc+1))
         done
     else
-        set +x
         while [ $nc -le $ncount_job ]; do
             ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
             nc=$((nc+1))
         done
-        set -x
     fi
 fi
 

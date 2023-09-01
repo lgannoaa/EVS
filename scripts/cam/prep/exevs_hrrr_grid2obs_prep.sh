@@ -16,6 +16,9 @@ set -x
 NEST_LIST="conus"
 export VERIF_TYPE="mping"
 
+####
+exit 0
+
 # Loop through HRRR Grid2Obs configs
 export njob=1
 for NEST in $NEST_LIST; do
@@ -89,12 +92,10 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
-    set +x
     while [ $nc -le $ncount_job ]; do
         ${DATA}/${VERIF_CASE}/${STEP}/prep_job_scripts/job${nc}
         nc=$((nc+1))
     done
-    set -x
 fi
 
 sleep 8

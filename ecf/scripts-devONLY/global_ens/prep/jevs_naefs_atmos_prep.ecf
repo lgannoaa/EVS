@@ -1,0 +1,51 @@
+#PBS -N jevs_naefs_atmos_prep
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=00:30:00
+#PBS -l place=vscatter,select=1:ncpus=68:mem=100GB
+#PBS -l debug=true
+
+model=evs
+%include <head.h>
+%include <envir-p1.h>
+
+############################################################
+# Load modules
+############################################################
+set -x
+export COMPONENT=naefs
+export STEP=prep
+source ${HOMEevs}/modulefiles/global_ens/${STEP}.sh
+module list
+
+############################################################
+# Specify environment variables
+############################################################
+export NET=evs
+export RUN=atmos
+export VERIF_CASE=grid2grid
+export MODELNAME=gefs
+export run_mpi=yes
+export get_gefs_bc_apcp24h=yes
+export get_model_bc=yes
+export COMOUT=${COMevs}
+export pid=${pid:-$$}
+export outid=${outid:-"LL$job"}
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
+
+############################################################
+# Execute j-job
+############################################################
+${HOMEevs}/jobs/global_ens/prep/JEVS_GLOBAL_ENS_PREP
+if [ $? -ne 0 ]; then
+   ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
+   ecflow_client --abort
+   exit
+fi
+
+%include <tail.h>
+%manual
+%end

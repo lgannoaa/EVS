@@ -7,7 +7,7 @@
 #PBS -l select=1:ncpus=1:mem=2GB
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -30,20 +30,12 @@ export RUN=atmos
 export VERIF_CASE=grid2obs
 export MODELNAME=aqm
 export modsys=aqm
-#export MET_bin_exec=bin
 export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export COMIN=${COMevs}
 export COMOUT=$COMIN/${STEP}/${COMPONENT}
-# export COMOUTsmall=${COMOUT}/${RUN}.${VDATE}/${MODELNAME}/${VERIF_CASE}
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
-#mkdir -p $DATA
-#cd $DATA
-#setpdy.sh
-#. ./PDY
-#export VDATE=${PDYm3}
-#export COMOUTfinal=${COMOUT}/${MODELNAME}.${VDATE}
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.${COMPONENT}.prod
 source $config
 
