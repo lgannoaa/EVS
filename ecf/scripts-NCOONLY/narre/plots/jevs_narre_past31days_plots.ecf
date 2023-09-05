@@ -40,9 +40,6 @@ export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 export COMIN=${COMevs}
 export COMOUT=${COMevs}
-#### Remove before NCO code delivery
-export DCOMROOT=/lfs/h1/ops/dev/dcom
-####
 
 ############################################################
 # Execute j-job

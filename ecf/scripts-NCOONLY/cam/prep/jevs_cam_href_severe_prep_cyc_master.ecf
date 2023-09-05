@@ -34,7 +34,6 @@ export VERIF_CASE=severe
 export MODELNAME=href
 export modsys=href
 export COMIN=${COMevs}
-export COMINspc=/lfs/h1/ops/dev/dcom
 export COMOUT=${COMevs}/${STEP}/${COMPONENT}
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}

@@ -34,7 +34,6 @@ export RUN=atmos
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN
 export MODELNAME="cfs cmc cmc_regional dwd ecmwf fnmoc imd jma metfra ukmet"
 export OBSNAME="osi_saf ghrsst_ospo"
