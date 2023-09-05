@@ -7,7 +7,7 @@
 #PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -23,8 +23,8 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
@@ -39,16 +39,12 @@ export model=$NET
 export RUN="atmos"
 export VERIF_CASE="grid2obs"
 export MODELNAME="rap" 
-#export envir="prod"
-#export evs_run_mode="standalone"
-export FIXevs="/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix"
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}
 export COMIN=${COMevs}
 export COMOUT=${COMevs}/$STEP/$COMPONENT
-# export COMOUTsmall=${COMOUT}/${RUN}.${VDATE}/${MODELNAME}/${VERIF_CASE}
 # VAR list to run
 export VAR_NAME_LIST="HGT TMP UGRD VGRD UGRD_VGRD SPFH"
 

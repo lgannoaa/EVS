@@ -7,7 +7,7 @@
 #PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -23,8 +23,8 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
@@ -39,8 +39,6 @@ export model=$NET
 export RUN="atmos"
 export VERIF_CASE="grid2obs"
 export MODELNAME="nam" 
-#export evs_run_mode="standalone"
-export FIXevs="/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix"
 export MET_PLUS_CONF="${PARMevs}/metplus_config/mesoscale/grid2obs/stats"
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
@@ -48,7 +46,6 @@ export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}
 export COMIN=${COMevs}
 export COMOUT=${COMevs}/$STEP/$COMPONENT
-export COMINspcotlk=/lfs/h2/emc/vpppg/noscrub/logan.dawson/evs/v1.0/prep/cam
 
 ############################################################
 # Execute j-job

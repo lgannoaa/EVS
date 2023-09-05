@@ -31,7 +31,6 @@ export COMIN=${COMevs}
 export COMOUT=$COMIN/${STEP}/${COMPONENT}
 export MODELNAME=urma
 export modsys=urma
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

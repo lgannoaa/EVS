@@ -39,7 +39,6 @@ export NET="evs"
 export RUN="atmos"
 export VERIF_CASE="grid2obs"
 export MODELNAME="hireswarw"
-export FIXevs="/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix"
 export COMOUT=${COMevs}/$STEP/$COMPONENT
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}

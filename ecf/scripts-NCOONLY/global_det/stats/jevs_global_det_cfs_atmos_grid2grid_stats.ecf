@@ -7,7 +7,7 @@
 #PBS -l place=vscatter,select=1:ncpus=40:ompthreads=1:mem=75GB
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -17,20 +17,19 @@ model=evs
 set -x
 export COMPONENT=global_det
 export STEP=stats
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
 export nproc=40
 export SENDCOM=YES
-export MET_bin_exec=bin
 export USE_CFP=YES
 export NET=evs
 export RUN=atmos
@@ -39,7 +38,6 @@ export MODELNAME=cfs
 export COMIN=${COMevs}
 export COMINcfs=$COMIN/prep/$COMPONENT/$RUN
 export COMOUT=${COMevs}/$STEP/$COMPONENT
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

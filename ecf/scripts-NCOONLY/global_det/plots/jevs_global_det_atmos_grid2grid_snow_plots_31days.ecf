@@ -7,7 +7,7 @@
 #PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -17,14 +17,14 @@ model=evs
 set -x
 export COMPONENT=global_det
 export STEP=plots
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
@@ -37,7 +37,6 @@ export VERIF_CASE=grid2grid
 export VERIF_TYPE=snow
 export NDAYS=31
 export COMIN=${COMevs}
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

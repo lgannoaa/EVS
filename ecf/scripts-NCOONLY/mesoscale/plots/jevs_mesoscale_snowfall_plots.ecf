@@ -24,8 +24,8 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
@@ -38,7 +38,6 @@ export MODELNAME=${COMPONENT}
 export config=$HOMEevs/parm/evs_config/mesoscale/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}
 export COMIN=${COMevs}/stats
 export COMOUT=${COMevs}/${STEP}/${COMPONENT}
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

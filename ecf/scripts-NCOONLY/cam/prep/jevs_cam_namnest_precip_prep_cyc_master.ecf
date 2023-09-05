@@ -39,7 +39,6 @@ export RUN="atmos"
 export VERIF_CASE="precip"
 export MODELNAME="namnest"
 export COMOUT=${COMevs}/$STEP/$COMPONENT
-export FIXevs="/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix"
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}
 
 ############################################################

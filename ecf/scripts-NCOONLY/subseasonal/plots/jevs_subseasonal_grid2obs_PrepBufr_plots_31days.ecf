@@ -7,7 +7,7 @@
 #PBS -l place=vscatter,select=1:ncpus=32:ompthreads=1:mem=10GB
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -23,8 +23,8 @@ module list
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
@@ -42,8 +42,6 @@ export DATA=${DATA:-${DATAROOT}/${jobid:?}}
 export COMIN=${COMevs}
 export COMINcfs=$COMIN/stats/$COMPONENT/cfs
 export COMINgefs=$COMIN/stats/$COMPONENT/gefs
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
-# export COMOUT=${COMevs}/$STEP/$COMPONENT/$RUN.$VDATE_END
 export config=$HOMEevs/parm/evs_config/${COMPONENT}/config.${model}.${COMPONENT}.${VERIF_CASE}.${STEP}.${VERIF_TYPE}
 
 ############################################################

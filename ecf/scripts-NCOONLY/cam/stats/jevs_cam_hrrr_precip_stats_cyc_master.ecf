@@ -38,7 +38,6 @@ export NET="evs"
 export RUN="atmos"
 export VERIF_CASE="precip"
 export MODELNAME="hrrr"
-export FIXevs="/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix"
 export COMINccpa=${COMevs}/prep/$COMPONENT
 export COMINmrms=${COMevs}/prep/$COMPONENT
 export COMINspcotlk=${COMevs}/prep/$COMPONENT

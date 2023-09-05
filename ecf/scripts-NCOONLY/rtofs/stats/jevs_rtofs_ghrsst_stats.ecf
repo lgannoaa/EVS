@@ -7,7 +7,7 @@
 #PBS -l select=1:ncpus=1:mem=500GB
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -17,14 +17,14 @@ model=evs
 set -x
 export COMPONENT=rtofs
 export STEP=stats
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
@@ -33,18 +33,11 @@ export RUN=ghrsst
 export RUNupper=GHRSST
 export VAR=sst
 export VERIF_CASE=grid2grid
-export VDATE=$($NDATE -72 ${PDY}00| cut -c 1-8)
+export VDATE=$($NDATE -48 ${PDY}00| cut -c 1-8)
 export COMIN=${COMevs}
 export COMINfcst=${COMevs}/prep/$COMPONENT
 export COMOUT=${COMevs}
 export COMOUTfinal=$COMOUT/$STEP/$COMPONENT/$COMPONENT.$VDATE
-#### Remove before NCO code delivery
-export DCOMROOT=/lfs/h1/ops/dev/dcom
-export COMINclimo=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix/climos/$COMPONENT
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
-export CONFIGevs=$HOMEevs/parm/metplus_config/$COMPONENT
-export ARCHevs=/lfs/h2/emc/vpppg/noscrub/$USER/stat_archive/RTOFS
-####
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

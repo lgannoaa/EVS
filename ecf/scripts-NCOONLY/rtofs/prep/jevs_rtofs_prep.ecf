@@ -4,11 +4,10 @@
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
 #PBS -l walltime=04:00:00
-#PBS -l place=vscatter:exclhost
-#PBS -l select=1:ncpus=20
+#PBS -l select=1:ncpus=1:mem=500GB
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
@@ -18,29 +17,23 @@ model=evs
 set -x
 export COMPONENT=rtofs
 export STEP=prep
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
-if [ -n "%cyc:%" ]; then
-  export cyc=${cyc:-%cyc:%}
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
 export NET=evs
-export VDATE=$($NDATE -72 ${PDY}00| cut -c 1-8)
+export VDATE=$($NDATE -48 ${PDY}00| cut -c 1-8)
 export COMIN=${COMevs}
 export COMINrtofs=$(compath.py ${COMPONENT}/v2.3)
 export COMOUT=${COMevs}
 export COMOUTprep=${COMevs}/$STEP/$COMPONENT
-#### Remove before NCO code delivery
-export DCOMROOT=/lfs/h1/ops/dev/dcom
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix/cdo_grids
-export USHevs=$HOMEevs/ush/$COMPONENT
-export CONFIGevs=$HOMEevs/parm/metplus_config/$COMPONENT
-#### 
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}

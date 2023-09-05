@@ -28,7 +28,6 @@ if [ -n "%CYC:%" ]; then
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export NET=evs
 export RUN=atmos
 export VERIF_CASE=severe
@@ -44,7 +43,6 @@ export LINE_TYPE=%LINE_TYPES%
 export SENDCOM=${SENDCOM:-YES}
 export SENDECF=${SENDECF:-YES}
 export SENDDBN=${SENDDBN:-NO}
-export KEEPDATA=${KEEPDATA:-NO}
 
 ############################################################
 # Execute j-job

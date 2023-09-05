@@ -28,10 +28,8 @@ if [ -n "%CYC:%" ]; then
 else
   export cyc=$($NDATE | cut -c 9-10)
 fi
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
 export SENDECF=YES
 export SENDCOM=YES
-export KEEPDATA=YES
 export SENDDBN=YES
 export SENDDBN_NTC=${SENDDBN_NTC:-NO}
 export USE_CFP=YES
@@ -49,7 +47,6 @@ export COMOUT=${COMevs}/$STEP/$COMPONENT
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
-export FIXevs="/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix"
 
 ############################################################
 # Execute j-job

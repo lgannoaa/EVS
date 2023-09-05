@@ -3,45 +3,43 @@
 #PBS -S /bin/bash
 #PBS -q %QUEUE%
 #PBS -A %PROJ%-%PROJENVIR%
-#PBS -l walltime=00:15:00
+#PBS -l walltime=03:30:00
 #PBS -l place=vscatter,select=1:ncpus=128:mem=500G
 #PBS -l debug=true
 
-model=evs
+export model=evs
 %include <head.h>
 %include <envir-p1.h>
 
 ############################################################
 # Load modules
 ############################################################
-set -x 
+set -x
 export COMPONENT=global_ens
 export STEP=plots
-source ${HOMEevs}/modulefiles/${COMPONENT}/${STEP}.sh
+source ${HOMEevs}/modulefiles/${COMPONENT}/${COMPONENT}_${STEP}.sh
 module list
 
 ############################################################
 # Specify environment variables
 ############################################################
-export SENDCOM=${SENDCOM:-YES}
-export SENDECF=${SENDECF:-YES}
-export SENDDBN=${SENDDBN:-YES}
-export MODELNAME=gefs
-export OBTYPE=GDAS
+if [ -n "%CYC:%" ]; then
+  export cyc=${cyc:-%CYC:%}
+else
+  export cyc=$($NDATE | cut -c 9-10)
+fi
+export OMP_NUM_THREADS=1
 export NET=evs
-export RUN=wave
+export RUN=atmos
 export VERIF_CASE=grid2obs
-export FIXevs=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/verification/EVS_fix
-export COMIN=${COMevs}
+export MODELNAME=gefs
 export run_mpi='yes'
 export gather='yes'
+export COMIN=${COMevs}
+export COMOUT=${COMevs}
 export pid=${pid:-$$}
 export outid=${outid:-"LL$job"}
 export DATA=${DATA:-${DATAROOT}/${jobid:?}}
-export metplus_verbosity="INFO"
-export met_verbosity="2"
-export log_met_output_to_metplus="yes"
-export MET_bin_exec=bin
 
 ############################################################
 # Execute j-job
