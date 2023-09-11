@@ -15,12 +15,12 @@ set -x
 # Set Basic Environment Variables
 last_cyc="21"
 NEST_LIST="conus ak spc_otlk firewx hi pr subreg"
-#### VERIF_TYPES="raob metar mping"
 VERIF_TYPES="raob metar"
 
 # Reformat MET Data
 export job_type="reformat"
 export njob=1
+export run_restart=true
 for NEST in $NEST_LIST; do
     export NEST=$NEST
     for VERIF_TYPE in $VERIF_TYPES; do
@@ -35,6 +35,18 @@ for NEST in $NEST_LIST; do
             source $USHevs/cam/cam_stats_grid2obs_filter_valid_hours_list.sh
         fi
         echo "RUN MODE: $evs_run_mode"
+
+        # Check For Restart Files
+        if [ $evs_run_mode = production ]; then
+            if [ "$run_restart" = true ]; then
+                python ${USHevs}/cam/cam_production_restart.py
+                status=$?
+                [[ $status -ne 0 ]] && exit $status
+                [[ $status -eq 0 ]] && echo "Successfully ran ${USHevs}/cam/cam_production_restart.py"
+                export run_restart=false
+            fi
+        fi
+
         for VHOUR in $VHOUR_LIST; do
             export VHOUR=$VHOUR
             # Check User's Configuration Settings
@@ -104,6 +116,7 @@ else
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 # Generate MET Data
@@ -187,6 +200,7 @@ else
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 export job_type="gather"
@@ -256,6 +270,7 @@ else
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 export job_type="gather2"
@@ -324,6 +339,7 @@ else
         ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
         nc=$((nc+1))
     done
+    set -x
 fi
 
 # Copy files to desired location
@@ -399,6 +415,7 @@ if [ "$cyc" -ge "$last_cyc" ]; then
             ${DATA}/${VERIF_CASE}/${STEP}/METplus_job_scripts/${job_type}/job${nc}
             nc=$((nc+1))
         done
+        set -x
     fi
 fi
 

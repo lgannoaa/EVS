@@ -38,7 +38,7 @@ elif [ "$NEST" = "firewx" ]; then
     export TEMP_DIR="${DATA}/${VERIF_CASE}/data/${NEST}.${VDATE}"
 elif [ "$NEST" = "conus" ]; then
     export OBSNAME="${VERIF_TYPE}"
-    export URL_HEAD=""
+    export URL_HEAD="https://mping.ou.edu/mping/api/v2/reports"
 else
     echo "The provided NEST, $NEST, is not supported for $MODELNAME"
     exit 1

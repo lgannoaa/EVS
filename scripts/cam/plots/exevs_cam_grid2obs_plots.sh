@@ -35,6 +35,14 @@ status=$?
 [[ $status -ne 0 ]] && exit $status
 [[ $status -eq 0 ]] && echo "Successfully ran cam_create_output_dirs.py"
 
+# Check For Restart Files
+if [ $evs_run_mode = production ]; then
+    python ${USHevs}/cam/cam_production_restart.py
+    status=$?
+    [[ $status -ne 0 ]] && exit $status
+    [[ $status -eq 0 ]] && echo "Successfully ran ${USHevs}/cam/cam_production_restart.py"
+fi
+
 # Create Job Script 
 python $USHevs/cam/cam_plots_grid2obs_create_job_scripts.py
 status=$?
@@ -75,7 +83,6 @@ if [ $USE_CFP = YES ]; then
         nc=$((nc+1))
     done
 else
-    set +x
     while [ $nc -le $ncount_job ]; do
         ${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/job${nc}
         nc=$((nc+1))

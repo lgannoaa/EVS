@@ -83,7 +83,7 @@ else
   export COMOUTplots=${COMOUTplots:-$COMOUT/$RUN.$VDATE}
 fi
 
-mkdir -p $COMOUT
+mkdir -p $COMOUT $COMOUTplots
 export machine=${machine:-WCOSS2}
 export MET_bin_exec=${MET_bin_exec:-bin}
 export MET_PLUS_PATH=${MET_PLUS_PATH:-$METPLUS_PATH}

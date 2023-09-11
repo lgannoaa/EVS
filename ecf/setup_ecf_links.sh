@@ -93,7 +93,16 @@ cyc=$(seq 2 3)
 link_master_to_cyc "jevs_cam_namnest_grid2obs_stats_cyc" "$cyc"
 cyc=$(seq 6 3 23)
 link_master_to_cyc "jevs_cam_namnest_grid2obs_stats_cyc" "$cyc"
-
+cyc=$(seq 0 6 23)
+link_master_to_cyc "jevs_cam_namnest_snowfall_stats_cyc" "$cyc"
+cyc=$(seq 0 6 23)
+link_master_to_cyc "jevs_cam_hrrr_snowfall_stats_cyc" "$cyc"
+cyc=$(seq 0 6 23)
+link_master_to_cyc "jevs_cam_hireswfv3_snowfall_stats_cyc" "$cyc"
+cyc=$(seq 0 6 23)
+link_master_to_cyc "jevs_cam_hireswarw_snowfall_stats_cyc" "$cyc"
+cyc=$(seq 0 6 23)
+link_master_to_cyc "jevs_cam_hireswarwmem2_snowfall_stats_cyc" "$cyc"
 # MESOSCALE files
 cd $ECF_DIR/scripts/mesoscale/stats
 echo "Linking MESOSCALE stats ..."
